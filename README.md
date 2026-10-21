@@ -1,5 +1,7 @@
 # Amfi tezgâhı — 5F1 Modifiye (Rev A)
 
+> **Repo'ya ilk kez bakıyorsan:** önce [`BASLA-BURADAN.md`](BASLA-BURADAN.md) — kurulum yönergesi, bir kerelik.
+
 5F1 tabanlı modifiye tüplü gitar amfisi (12AX7 + 6V6GT + 5Y3GT, single-ended) için çevrimdışı simülatör. `index.html` dosyasını tarayıcıda açmak yeterli; internet ve kurulum gerekmez (fontlar `assets/fonts/` içinde gömülü). İstenirse `start_server.command` yerel sunucu açar (http://localhost:8090).
 
 Laboratuvar arayüzü ve doğrulama yaklaşımı Battery Lab Simulator'dan uyarlandı; **elektrik modeli sıfırdan yazıldı** (batarya, BMS, XL4015 ya da firmware modeli taşınmadı). Girdi belgeleri üst klasörde: `../Kaynaklar/`.
