@@ -4,7 +4,7 @@
 
 5F1 tabanlı modifiye tüplü gitar amfisi (12AX7 + 6V6GT + 5Y3GT, single-ended) için çevrimdışı simülatör. `index.html` dosyasını tarayıcıda açmak yeterli; internet ve kurulum gerekmez (fontlar `assets/fonts/` içinde gömülü). İstenirse `start_server.command` yerel sunucu açar (http://localhost:8090).
 
-Laboratuvar arayüzü ve doğrulama yaklaşımı Battery Lab Simulator'dan uyarlandı; **elektrik modeli sıfırdan yazıldı** (batarya, BMS, XL4015 ya da firmware modeli taşınmadı). Girdi belgeleri üst klasörde: `../Kaynaklar/`.
+Laboratuvar arayüzü ve doğrulama yaklaşımı Battery Lab Simulator'dan uyarlandı; **elektrik modeli sıfırdan yazıldı** (batarya, BMS, XL4015 ya da firmware modeli taşınmadı). Girdi belgeleri (5F1 modifiye proje raporu, inceleme ve tedarik raporu, JJ 6V6S ve 5Y3S veri sayfaları) **bu repo'da değildir**; telif ve kapsam nedeniyle dışarıda tutuldu. İhtiyaç duyarsan repo sahiplerinden iste.
 
 > **Bu bir simülasyondur.** Üretim şeması, güvenlik onayı ya da canlı devrede çalışma talimatı değildir. Amfide birkaç yüz volt DC bulunur; filtre kapasitörleri fiş çekildikten sonra da şarj tutabilir.
 
