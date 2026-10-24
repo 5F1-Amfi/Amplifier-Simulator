@@ -118,7 +118,7 @@
     if (c.note) left += `<p>${esc(c.note)}</p>`;
     if (c.pins) left += `<p class="src">Pinler: ${esc(c.pins)}</p>`;
     if (dec) left += `<p class="why"><b>${dec.id} · ${esc(dec.title)}</b> (${dec.state}). ${esc(dec.sim)} <button class="btn sm" data-dec="${dec.id}">Karara git</button></p>`;
-    if (card) left += `<p class="why a"><b>Model: ${card.id} v${card.version}</b> — ${esc(card.tube)}. Sınır verisi eksik: ${esc(card.limitsRef)} <button class="btn sm" data-tab="cards">Model kartı</button></p>`;
+    if (card) left += `<p class="why a"><b>Model: ${card.id} v${card.version}</b> — ${esc(card.tube)}. Sınır değerleri: ${esc(card.limitsRef)} <button class="btn sm" data-tab="cards">Model kartı</button></p>`;
     left += `<p class="src">Kaynak: ${esc(c.src || '—')} · tolerans: veri eksik · üretici: ${c.mfr ? esc(c.mfr) : 'veri eksik'} · parça kodu / paket: veri eksik${c.supply.length ? ' · tedarik adayı: ' + supplyLinks(c.supply) + ` (kontrol ${D.SUPPLY_CHECKED})` : ''}</p>`;
 
     let right = `<dl class="kv">${liveKV(id).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
@@ -276,7 +276,7 @@
     const card = c => `<article class="card"><h4>${c.id} <span class="hint">v${c.version} · ${esc(c.tube)}</span></h4><p><code>${esc(c.eq)}</code></p>` +
       `<dl class="kv"><dt>Kaynak</dt><dd style="font-family:inherit">${esc(c.source)}</dd><dt>Lisans</dt><dd style="font-family:inherit">${esc(c.license)}</dd><dt>Geçerli aralık</dt><dd style="font-family:inherit">${esc(c.range)}</dd>` +
       `<dt>Doğrulama kanıtı</dt><dd style="font-family:inherit">${esc(c.evidence)}</dd><dt>Heater</dt><dd style="font-family:inherit">${num(c.heater.v, 1)} V / ${num(c.heater.a, 2)} A — ${esc(c.heater.note)}</dd>` +
-      `<dt>Sınır değerleri</dt><dd style="font-family:inherit">veri eksik. ${esc(c.limitsRef)}</dd><dt>Isınma (temsilî)</dt><dd style="font-family:inherit">τ açılış ${c.warm.tauUp} s, kapanış ${c.warm.tauDown} s; kalibre değil</dd></dl>` +
+      `<dt>Sınır değerleri</dt><dd style="font-family:inherit">${esc(c.limitsRef)}</dd><dt>Isınma (temsilî)</dt><dd style="font-family:inherit">τ açılış ${c.warm.tauUp} s, kapanış ${c.warm.tauDown} s; kalibre değil</dd></dl>` +
       `<div class="h4">Modellenmeyen etkiler</div><ul>${c.missing.map(m => `<li>${esc(m)}</li>`).join('')}</ul></article>`;
     $('cards').innerHTML = `<div class="cols2">${used.map(k => card(Tubes.CARDS[k])).join('')}` +
       `<article class="card"><h4>Trafolar <span class="hint">deneysel veri</span></h4><p>T1: iki ideal sinüs kaynağı + plaka başına ${U.fmt(P.T1.rt, 'Ω')} seri direnç. T2: çok sargılı ideal trafo + mıknatıslanma endüktansı ${num(P.T2.lp, 0)} H + kaçak ${U.fmt(P.T2.lleak, 'H')} + sargı dirençleri.</p>` +

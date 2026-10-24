@@ -13,7 +13,7 @@
 - **Geçerli aralık:** Vp 0–450 V, Vg −5…+1 V, Ip 0–5 mA
 - **Doğrulama kanıtı:** 250 V / −2 V noktasında model 0,95 mA; tipik veri sayfası 1,2 mA (−%21). Genel uyum; eldeki tüp ölçülmedi.
 - **Heater:** 6.3 V / 0.3 A — 6,3 V paralel bağlantı (4+5 / 9)
-- **Sınır değerleri:** veri eksik. Eldeki tüpün veri sayfası kaydedilmedi.
+- **Sınır değerleri:** GE 12AX7 ET-T509B (1953), design-center, her bölüm: plaka 300 V, plaka gücü 1,0 W, heater–katot 180 V. Soğuk plaka gerilimi sınırı verilmemiş. Tip veri sayfası; eldeki tüpün kendi verisi değil (docs/veri-sayfalari/).
 - **Isınma (temsilî, kalibre değil):** τ açılış 6 s, kapanış 12 s
 - **Modellenmeyen etkiler:**
   - Üretici / varyant farkı
@@ -30,8 +30,8 @@
 - **Lisans:** Yayımlanmış denklem ve parametreler; dosya kopyalanmadı.
 - **Geçerli aralık:** Vp 0–500 V, Vg2 0–450 V, Vg1 −40…+2 V
 - **Doğrulama kanıtı:** JJ 6V6S tipik nokta 250 V / 250 V / −12,5 V: veri sayfası Ia 45 mA, Ig2 5 mA; model 46,1 mA ve 5,0 mA (tests/run-tests.js MK-02).
-- **Heater:** 6.3 V / 0.5 A — JJ 6V6S: 0,5 A. Eski 6V6GT tipik 0,45 A; eldeki tüple doğrulanmalı.
-- **Sınır değerleri:** veri eksik. REFERANS (JJ 6V6S, eldeki tüp değil): Ua 500 V, Ug2 450 V, Wa 14 W; grid devresi direnci self-bias ≤ 0,5 MΩ.
+- **Heater:** 6.3 V / 0.45 A — RCA 6V6GTA ve GE 6V6-GT: 0,45 A (RCA: ± %6).
+- **Sınır değerleri:** Design-center (GE 6V6-GT ET-T914, 1955): plaka 315 V, screen 285 V, Wa 12 W, Wg2 2,0 W. Design-maximum (RCA 6V6GTA, 1962; RCA: 6V6GT ile aynı): plaka 350 V, screen 315 V, Wa 14 W, Wg2 2,2 W. Heater–katot 200 V; katot biasta grid devresi ≤ 0,5 MΩ. Tip veri sayfası; eldeki Hitachi'nin kendi verisi değil (docs/veri-sayfalari/).
 - **Isınma (temsilî, kalibre değil):** τ açılış 6 s, kapanış 15 s
 - **Modellenmeyen etkiler:**
   - Ekran akımının diz bölgesindeki biçimi ölçülmüş eğrilerle doğrulanmadı: kırpılmadaki ekran gücü ve çıkış gücü yaklaşık değerlerdir
@@ -49,7 +49,7 @@
 - **Geçerli aralık:** Plaka başına 0–0,5 A; ileri düşüm 0–90 V
 - **Doğrulama kanıtı:** tests/run-tests.js MK-01: aynı koşulda model çıkışı 360 V ± %1.
 - **Heater:** 5 V / 2 A — Ayrı 5 V sargı; B+ potansiyelinde yüzer.
-- **Sınır değerleri:** veri eksik. REFERANS (JJ 5Y3S tipik çalışma, sınır değil): 350 VAC / 20 µF / 50 Ω / 125 mA. Eldeki 5Y3GT için tepe plaka akımı ve PIV sınırı kaydedilmedi.
+- **Sınır değerleri:** RCA 5Y3GT (1961), design-center: ters tepe gerilimi 1400 V; kararlı tepe akım 440 mA / plaka; geçici tepe 2,5 A / plaka; kapasitör girişte en çok 350 VRMS / plaka ve 125 mA DC. Grafikten (yaklaşık): 320 VRMS'de ≈ 128 mA DC, en küçük kaynak direnci ≈ 34 Ω / plaka. Tip veri sayfası; eldeki tüpün kendi verisi değil (docs/veri-sayfalari/).
 - **Isınma (temsilî, kalibre değil):** τ açılış 0.8 s, kapanış 2 s
 - **Modellenmeyen etkiler:**
   - Ters kaçak ve ark (flashover)

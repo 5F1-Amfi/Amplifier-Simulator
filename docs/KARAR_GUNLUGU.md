@@ -17,11 +17,11 @@
 ## K-02 · Tüp kimlikleri ve çalışma noktası
 
 - **Öncelik / durum:** P0 · KISMEN
-- **Açık olan:** Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Açık kalan: üç tüpün veri sayfası ve sınır değerleri, V1 üreticisi, V3 baskısının doğrulanması.
-- **Simülasyon varsayımı:** Genel Koren / Child modelleri. Sınır değerleri "veri eksik"; JJ değerleri yalnız referans olarak gösterilir.
-- **Nasıl kapanır:** Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.
+- **Açık olan:** Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Sınır değerleri tip veri sayfalarından alındı (docs/veri-sayfalari/; tip sınırı üreticiden bağımsızdır). Açık kalan: eldeki tüplerin çalışma noktası ölçümü, V1 üreticisi, V3 baskısının doğrulanması.
+- **Simülasyon varsayımı:** Genel Koren / Child modelleri; eğriler eldeki tüple ölçülmedi. Sınır denetimi K-17'ye göre.
+- **Nasıl kapanır:** İlk açılışta 6V6 katot gerilimi ve V1A / V1B plaka gerilimlerinin ölçülüp modelle karşılaştırılması; gerekirse model parametrelerinin bu ölçüme göre ayarlanması.
 - **Parçalar:** V1A, V1B, V2, V3
-- **Kaynak:** P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026)
+- **Kaynak:** P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026); docs/veri-sayfalari/
 
 ## K-03 · V1A katot bypass
 
@@ -148,6 +148,15 @@
 - **Nasıl kapanır:** Hoparlör ölçümü; SPL / kabin tonu iddiası yapılmaz.
 - **Parçalar:** J2, J3, J4
 - **Kaynak:** P1 s.9; IR §10
+
+## K-17 · Tüp sınır değerlerinde güvenlik payı
+
+- **Öncelik / durum:** P1 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): tüpler veri sayfası sınırına kadar zorlanmasın, pay bırakılsın. Seçilen yöntem uydurma bir yüzde yerine veri sayfalarının kendi iki sınır sistemini kullanır.
+- **Simülasyon varsayımı:** Design-center üstü uyarı, design-maximum üstü hata; yalnız design-center bilinen tüpte (12AX7, 5Y3GT) design-center üstü hata. Gerilimler katoda göre, şebeke periyodu ortalaması. 6V6GT'de design-center ≈ design-max'ın %86–91'i.
+- **Nasıl kapanır:** Kapalı. Gerçek PT verisi (K-08) ve ilk açılış ölçümünden sonra çalışma noktası yeniden denetlenir.
+- **Parçalar:** V1A, V1B, V2, V3
+- **Kaynak:** docs/veri-sayfalari/ (GE ET-T914, RCA 6V6GTA, GE ET-T509B, RCA 5Y3GT)
 
 ## Deneysel profil DENEYSEL-01
 

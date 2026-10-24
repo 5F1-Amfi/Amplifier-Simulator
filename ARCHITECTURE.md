@@ -72,7 +72,7 @@ Oynatma hızı yalnızca kare başına atılan canlı adım sayısını değişt
 
 ## 8. Sonraki adımlar
 
-1. Açık kararları kapatmak (K-01 … K-16) ve kapananları kanonik tanıma `RAPOR` olarak işlemek.
+1. Açık kararları kapatmak (K-01 … K-17) ve kapananları kanonik tanıma `RAPOR` olarak işlemek.
 2. Eldeki tüplerin kimliğini kaydetmek; model kartlarını ve sınır değerlerini güncellemek.
 3. Bobinajcıdan PT / OT verisi gelince profildeki `T1` / `T2` alanlarını gerçek değerlerle değiştirmek.
 4. ngspice ile bağımsız karşılaştırma (NU-03b): `docs/netlist-raw-normal.cir` başlangıç noktasıdır.
