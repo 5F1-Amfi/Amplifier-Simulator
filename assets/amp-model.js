@@ -539,7 +539,7 @@
         add(p > pr ? 'bad' : p > 0.6 * pr ? 'warn' : 'ok', `${id} güç kaybı`, `${U(p, 2)} W / ${pr} W`, `${comp.fn}. Sürekli çalışmada pay bırakılması önerilir.`);
       }
       const ref = Tubes.CARDS[P.models.V2].ref;
-      add(w.pa > ref.paW ? 'warn' : 'na', '6V6 anodik güç kaybı', `${U(w.pa, 1)} W`, `Sınır verisi eksik: eldeki 6V6GT\'nin üreticisi bilinmiyor. Yalnız referans: JJ 6V6S ${ref.paW} W. Pa = (Va − Vk) × Ia; Va, B+1\'den OT primer DCR düşümü kadar düşüktür.`);
+      add(w.pa > ref.paW ? 'warn' : 'na', '6V6 anodik güç kaybı', `${U(w.pa, 1)} W`, `Sınır verisi eksik: eldeki Hitachi 6V6GT\'nin veri sayfası kaydedilmedi. Yalnız referans: JJ 6V6S ${ref.paW} W. Pa = (Va − Vk) × Ia; Va, B+1\'den OT primer DCR düşümü kadar düşüktür.`);
       add('na', '6V6 screen güç kaybı', `${U(w.pg2, 2)} W`, 'Pg2 = (Vg2 − Vk) × Ig2. Sınır verisi eksik. Model ekran akımını plaka geriliminden bağımsız hesaplar; kırpılmada düşük tahmin eder.');
       add(w.A6Max > ref.vaV || w.B2 > ref.vg2V ? 'warn' : 'na', '6V6 plaka / screen gerilimi', `Va ${U(w.A6)} V · Vg2 ${U(w.B2)} V`, `Sınır verisi eksik. Yalnız referans: JJ 6V6S Ua ${ref.vaV} V, Ug2 ${ref.vg2V} V.`);
       add(w.ia > 0.04 ? 'warn' : 'ok', 'OT primer DC akımı', `${U(w.ia * 1000, 1)} mA`, 'Şartname: "en az ~40 mA; tercihen ~50 mA". Teklifte DC bias kapasitesi bu çalışma noktasıyla teyit edilmeli.');

@@ -20,7 +20,7 @@
   const REVISION = { id: 'Rev A', date: '01.10.2026', schema: 1, title: '5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ' };
 
   // id, tip, işlev, düğümler, değer (SI), birim, + ek alanlar
-  const c = (id, type, fn, nodes, value, unit, x) => Object.assign({ id, type, fn, nodes, value, unit, tol: null, rating: {}, status: 'RAPOR', stock: null, src: '', rapor: null, note: '', supply: [], group: '' }, x);
+  const c = (id, type, fn, nodes, value, unit, x) => Object.assign({ id, type, fn, nodes, value, unit, tol: null, mfr: null, rating: {}, status: 'RAPOR', stock: null, src: '', rapor: null, note: '', supply: [], group: '' }, x);
 
   const COMPONENTS = [
     // --- Şebeke ve besleme --------------------------------------------------------
@@ -31,9 +31,9 @@
     c('T1', 'PT', 'Güç trafosu', ['HA', 'HB', 'GND'], null, '', { stock: 'ÖZEL SARIM', src: 'P1 s.3; IR §24', group: 'Trafolar', supply: ['S1'], decision: 'K-08',
       spec: '230 VAC 50 Hz → 320-0-320 VAC (orta uçlu, ~70 mA) · 5 VAC / 2 A ayrı · 6,3 VAC / 1,5 A',
       note: 'Yüklü / yüksüz gerilim, sargı DCR, regülasyon ve "70 mA"nın tanımı üreticiden yazılı alınmalı. Model bu veriler yerine deneysel profil varsayımı kullanır.' }),
-    c('V3', 'RECT', 'Doğrultucu', ['HA', 'HB', 'B1'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '5Y3-child', decision: 'K-02', spec: '5Y3GT',
+    c('V3', 'RECT', 'Doğrultucu', ['HA', 'HB', 'B1'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '5Y3-child', decision: 'K-02', spec: '5Y3GT', mfr: '"Ultaon" (baskı okunduğu gibi)',
       pins: 'Pin 4 ve 6: HV AC plakalar · Pin 2 ve 8: 5 V filaman; B+ filaman / katot tarafından (pin 8) alınır',
-      note: 'Üretici / varyant kaydedilmedi. Genel model kullanılır.' }),
+      note: 'Baskı: "Ultaon"; altta silik "11gr" (anlamı belirsiz). Satın alımda emisyon testi %95 (test cihazı ve tarihi bilinmiyor). Veri sayfası yok; genel model kullanılır.' }),
     c('C3', 'C', 'İlk filtre (reservoir)', ['B1', 'GND'], 16e-6, 'F', { rating: { V: 500 }, stock: 'SATIN AL', src: 'P1 s.4', rapor: 'C3', group: 'Besleme filtresi', supply: ['S2'], decision: 'K-10', polar: true,
       note: 'Türkiye içinde radial 16 µF / 500 V doğrulanamadı; S2 adayı axial. Eldeki 22 µF / 450 V final tercih değildir (yedek).' }),
     c('R10', 'R', 'B+1 → B+2 düşürme', ['B1', 'B2'], 10e3, 'Ω', { rating: { W: 2 }, stock: 'ELDE', src: 'P1 s.4, s.11', group: 'Besleme filtresi', decision: 'K-01' }),
@@ -59,7 +59,8 @@
 
     // --- V1A ----------------------------------------------------------------------
     c('V1A', 'TRIODE', 'Giriş katı (12AX7 1. yarı)', ['PA', 'G1', 'KA'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '12AX7-koren', decision: 'K-02', spec: '12AX7 / ECC83',
-      pins: 'Pin 1 plaka · Pin 2 grid · Pin 3 katot · Heater 4+5 / 9 (6,3 V)' }),
+      pins: 'Pin 1 plaka · Pin 2 grid · Pin 3 katot · Heater 4+5 / 9 (6,3 V)',
+      note: 'Baskı: yalnız "ECC83"; marka yok. Satın alımda emisyon testi %100 (test cihazı ve tarihi bilinmiyor). Veri sayfası yok; genel model kullanılır.' }),
     c('R4', 'R', 'V1A anodik yük', ['B3', 'PA'], 100e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
     c('R5', 'R', 'V1A katot', ['KA', 'GND'], 1.5e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
     c('C7', 'C', 'V1A katot bypass (tanımsız)', ['KA', 'GND'], null, 'F', { status: 'ACIK', stock: null, src: 'IR §8', group: 'Sinyal katları', decision: 'K-03', optional: true, candidates: [25e-6, 22e-6], polar: true, rating: { V: 25 },
@@ -98,9 +99,9 @@
       note: 'Sabit 4 Ω tapından V1B katoduna. Kabin 8 / 16 Ω jaka taşınınca kaynak tapı değişmez.' }),
     c('C2', 'C', 'V1B → 6V6 kuplaj', ['PB', 'G6'], 22e-9, 'F', { rating: { V: 630 }, stock: 'SATIN AL', src: 'P1 s.6, s.10', group: 'Sinyal katları', supply: ['S3', 'S4'] }),
     c('R8', 'R', '6V6 grid leak', ['G6', 'GND'], 220e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
-    c('V2', 'PENTODE', 'Güç tüpü', ['A6', 'B2', 'G6', 'K6'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '6V6-koren', decision: 'K-02', spec: '6V6GT',
+    c('V2', 'PENTODE', 'Güç tüpü', ['A6', 'B2', 'G6', 'K6'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '6V6-koren', decision: 'K-02', spec: '6V6GT', mfr: 'Hitachi (Japan)',
       pins: 'Pin 2/7 heater · Pin 3 plaka · Pin 4 screen · Pin 5 kontrol gridi · Pin 8 katot',
-      note: 'Screen doğrudan B+2\'ye: raporda screen direnci ve grid stopper tanımlı değil (K-15).' }),
+      note: 'Baskı: "6V6-GT HITACHI JAPAN". Veri sayfası yok; genel model kullanılır. Screen doğrudan B+2\'ye: raporda screen direnci ve grid stopper tanımlı değil (K-15).' }),
     c('R9', 'R', '6V6 katot (cathode bias)', ['K6', 'GND'], 470, 'Ω', { rating: { W: 5 }, stock: 'ELDE', src: 'P1 s.5–6', group: 'Sinyal katları', note: 'Karttan birkaç mm yükseltilerek monte edilir.' }),
     c('C6', 'C', '6V6 katot bypass', ['K6', 'GND'], 22e-6, 'F', { rating: { V: 50 }, stock: 'ELDE', src: 'P1 s.4', group: 'Sinyal katları', polar: true, note: '25 µF yerine 22 µF. Polarite, ESR ve gerçek katot gerilimi kontrol edilir.' }),
     c('T2', 'OT', 'Çıkış trafosu', ['B1', 'A6', 'S4', 'S8', 'S16'], null, '', { stock: 'ÖZEL SARIM', src: 'P1 s.7–8; IR §24', group: 'Trafolar', supply: ['S1'], decision: 'K-09',
@@ -126,10 +127,10 @@
       open: 'P1 s.4\'teki çizimde 22 kΩ kolunun başlangıcı belirsiz (B+1\'den ayrı kol gibi); s.11\'de seri zincir açık.',
       sim: 'Seri zincir: B+1 → 10 kΩ / 2 W → B+2 → 22 kΩ / 2 W → B+3. B+1: OT / güç katı, B+2: screen, B+3: 12AX7 anodik yükleri.',
       close: 'Kullanıcı onayı ve tek şemaya aktarım.', src: 'P1 s.4, s.11; IR §6.1' },
-    { id: 'K-02', pri: 'P0', title: 'Tüp kimlikleri ve çalışma noktası', state: 'AÇIK', parts: ['V1A', 'V1B', 'V2', 'V3'],
-      open: 'Eldeki 12AX7, 6V6GT ve 5Y3GT\'nin üreticisi, tam tipi ve veri sayfası kayıtlı değil.',
+    { id: 'K-02', pri: 'P0', title: 'Tüp kimlikleri ve çalışma noktası', state: 'KISMEN', parts: ['V1A', 'V1B', 'V2', 'V3'],
+      open: 'Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Açık kalan: üç tüpün veri sayfası ve sınır değerleri, V1 üreticisi, V3 baskısının doğrulanması.',
       sim: 'Genel Koren / Child modelleri. Sınır değerleri "veri eksik"; JJ değerleri yalnız referans olarak gösterilir.',
-      close: 'Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.', src: 'P1 s.3; IR §7' },
+      close: 'Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.', src: 'P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026)' },
     { id: 'K-03', pri: 'P0', title: 'V1A katot bypass', state: 'AÇIK', parts: ['C7'],
       open: 'Raporda V1A katodu yalnız 1,5 kΩ; bypass kondansatörü tanımlı değil.',
       sim: 'Takılı değil (rapordaki tanım). 25 µF varyantı ayrı senaryo olarak denenebilir.',

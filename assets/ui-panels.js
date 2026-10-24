@@ -119,7 +119,7 @@
     if (c.pins) left += `<p class="src">Pinler: ${esc(c.pins)}</p>`;
     if (dec) left += `<p class="why"><b>${dec.id} · ${esc(dec.title)}</b> (${dec.state}). ${esc(dec.sim)} <button class="btn sm" data-dec="${dec.id}">Karara git</button></p>`;
     if (card) left += `<p class="why a"><b>Model: ${card.id} v${card.version}</b> — ${esc(card.tube)}. Sınır verisi eksik: ${esc(card.limitsRef)} <button class="btn sm" data-tab="cards">Model kartı</button></p>`;
-    left += `<p class="src">Kaynak: ${esc(c.src || '—')} · tolerans: veri eksik · üretici / parça kodu / paket: veri eksik${c.supply.length ? ' · tedarik adayı: ' + supplyLinks(c.supply) + ` (kontrol ${D.SUPPLY_CHECKED})` : ''}</p>`;
+    left += `<p class="src">Kaynak: ${esc(c.src || '—')} · tolerans: veri eksik · üretici: ${c.mfr ? esc(c.mfr) : 'veri eksik'} · parça kodu / paket: veri eksik${c.supply.length ? ' · tedarik adayı: ' + supplyLinks(c.supply) + ` (kontrol ${D.SUPPLY_CHECKED})` : ''}</p>`;
 
     let right = `<dl class="kv">${liveKV(id).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
     if (valued) {

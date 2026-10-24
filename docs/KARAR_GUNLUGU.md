@@ -16,12 +16,12 @@
 
 ## K-02 · Tüp kimlikleri ve çalışma noktası
 
-- **Öncelik / durum:** P0 · AÇIK
-- **Açık olan:** Eldeki 12AX7, 6V6GT ve 5Y3GT'nin üreticisi, tam tipi ve veri sayfası kayıtlı değil.
+- **Öncelik / durum:** P0 · KISMEN
+- **Açık olan:** Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Açık kalan: üç tüpün veri sayfası ve sınır değerleri, V1 üreticisi, V3 baskısının doğrulanması.
 - **Simülasyon varsayımı:** Genel Koren / Child modelleri. Sınır değerleri "veri eksik"; JJ değerleri yalnız referans olarak gösterilir.
 - **Nasıl kapanır:** Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.
 - **Parçalar:** V1A, V1B, V2, V3
-- **Kaynak:** P1 s.3; IR §7
+- **Kaynak:** P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026)
 
 ## K-03 · V1A katot bypass
 
