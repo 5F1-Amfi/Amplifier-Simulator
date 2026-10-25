@@ -35,7 +35,7 @@
         ref: c.id === 'V1A' ? 'V1' : c.id, fn: c.id === 'V1A' ? 'Ön yükselteç tüpü (V1A + V1B)' : c.fn, value: valueText(c.id, profile),
         qty: c.qty || 1, status: ['R', 'C', 'POT'].includes(c.type) ? r.status : c.status,
         stock: c.optional && !fitted ? 'OPSİYONEL · takılı değil' : (c.stock || (r.status === 'DENEYSEL' ? 'DEĞER ONAYI BEKLİYOR' : '—')),
-        tol: c.tol, mfr: null, mpn: null, pkg: null,
+        tol: c.tol, mfr: c.mfr, mpn: null, pkg: null,
         supply: c.supply, src: c.src, note: c.note, group: c.group, decision: c.decision || null, id: c.id, fitted,
       });
     }

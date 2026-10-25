@@ -1,10 +1,11 @@
 /*
  * Tüp model kartları ve MNA elemanları.
  *
- * ÖNEMLİ: Eldeki 12AX7 / 6V6GT / 5Y3GT tüplerinin üreticisi ve varyantı kayıtlı değildir.
- * Buradaki kartlar GENEL modellerdir; her kart kaynağını, sürümünü, geçerli aralığını ve
- * modellenmeyen etkileri taşır. Sınır değerleri (limits) yalnızca REFERANS'tır; eldeki tüpe
- * otomatik uygulanmaz ("sınır verisi eksik").
+ * ÖNEMLİ: Buradaki kartlar GENEL modellerdir; eldeki tüplerin (K-02) eğrileri ölçülmedi.
+ * Her kart kaynağını, sürümünü, geçerli aralığını ve modellenmeyen etkileri taşır.
+ * Sınır değerleri (limits) tüp TİPİNİN veri sayfasından gelir (docs/veri-sayfalari/):
+ *   dc = design-center, dm = design-maximum (yoksa null). Denetim (K-17): dc üstü uyarı,
+ *   dm üstü hata; dm bilinmiyorsa dc üstü hata. Gerilimler katoda göredir.
  *
  * em: katot emisyon çarpanı (0 = soğuk, 1 = sıcak). Isınma eğrisi temsilîdir, kalibre değildir.
  */
@@ -22,8 +23,8 @@
       missing: ['Üretici / varyant farkı', 'Mikrofoni, gürültü, heater–katot kaçağı', 'Grid akımı yalnız basit diyot + 2 kΩ', 'Sıcaklığa bağlı kayma'],
       evidence: '250 V / −2 V noktasında model 0,95 mA; tipik veri sayfası 1,2 mA (−%21). Genel uyum; eldeki tüp ölçülmedi.',
       heater: { v: 6.3, a: 0.3, note: '6,3 V paralel bağlantı (4+5 / 9)' },
-      limits: null,
-      limitsRef: 'Eldeki tüpün veri sayfası kaydedilmedi.',
+      limits: { dc: { va: 300, pa: 1.0 }, dm: null, hkV: 180 },
+      limitsRef: 'GE 12AX7 ET-T509B (1953), design-center, her bölüm: plaka 300 V, plaka gücü 1,0 W, heater–katot 180 V. Soğuk plaka gerilimi sınırı verilmemiş. Tip veri sayfası; eldeki tüpün kendi verisi değil (docs/veri-sayfalari/).',
       warm: { tauUp: 6, tauDown: 12, w0: 0.6 },
     },
     '6V6-koren': {
@@ -35,10 +36,9 @@
       range: 'Vp 0–500 V, Vg2 0–450 V, Vg1 −40…+2 V',
       missing: ['Ekran akımının diz bölgesindeki biçimi ölçülmüş eğrilerle doğrulanmadı: kırpılmadaki ekran gücü ve çıkış gücü yaklaşık değerlerdir', 'Üretici / varyant farkı', 'İkincil emisyon ve demet oluşumu ayrıntısı', 'Isıl kayma'],
       evidence: 'JJ 6V6S tipik nokta 250 V / 250 V / −12,5 V: veri sayfası Ia 45 mA, Ig2 5 mA; model 46,1 mA ve 5,0 mA (tests/run-tests.js MK-02).',
-      heater: { v: 6.3, a: 0.5, note: 'JJ 6V6S: 0,5 A. Eski 6V6GT tipik 0,45 A; eldeki tüple doğrulanmalı.' },
-      limits: null,
-      limitsRef: 'REFERANS (JJ 6V6S, eldeki tüp değil): Ua 500 V, Ug2 450 V, Wa 14 W; grid devresi direnci self-bias ≤ 0,5 MΩ.',
-      ref: { paW: 14, vaV: 500, vg2V: 450, rg1Ohm: 0.5e6 },
+      heater: { v: 6.3, a: 0.45, note: 'RCA 6V6GTA ve GE 6V6-GT: 0,45 A (RCA: ± %6).' },
+      limits: { dc: { va: 315, vg2: 285, pa: 12, pg2: 2.0 }, dm: { va: 350, vg2: 315, pa: 14, pg2: 2.2 }, hkV: 200, rg1Ohm: 0.5e6 },
+      limitsRef: 'Design-center (GE 6V6-GT ET-T914, 1955): plaka 315 V, screen 285 V, Wa 12 W, Wg2 2,0 W. Design-maximum (RCA 6V6GTA, 1962; RCA: 6V6GT ile aynı): plaka 350 V, screen 315 V, Wa 14 W, Wg2 2,2 W. Heater–katot 200 V; katot biasta grid devresi ≤ 0,5 MΩ. Tip veri sayfası; eldeki Hitachi\'nin kendi verisi değil (docs/veri-sayfalari/).',
       warm: { tauUp: 6, tauDown: 15, w0: 0.6 },
     },
     '5Y3-child': {
@@ -51,8 +51,8 @@
       missing: ['Ters kaçak ve ark (flashover)', 'Filaman ısınma ayrıntısı', 'Üretici / varyant farkı'],
       evidence: 'tests/run-tests.js MK-01: aynı koşulda model çıkışı 360 V ± %1.',
       heater: { v: 5, a: 2, note: 'Ayrı 5 V sargı; B+ potansiyelinde yüzer.' },
-      limits: null,
-      limitsRef: 'REFERANS (JJ 5Y3S tipik çalışma, sınır değil): 350 VAC / 20 µF / 50 Ω / 125 mA. Eldeki 5Y3GT için tepe plaka akımı ve PIV sınırı kaydedilmedi.',
+      limits: { dc: { piv: 1400, ipk: 0.44, ipkTr: 2.5, vac: 350, idc: 0.125 }, dm: null },
+      limitsRef: 'RCA 5Y3GT (1961), design-center: ters tepe gerilimi 1400 V; kararlı tepe akım 440 mA / plaka; geçici tepe 2,5 A / plaka; kapasitör girişte en çok 350 VRMS / plaka ve 125 mA DC. Grafikten (yaklaşık): 320 VRMS\'de ≈ 128 mA DC, en küçük kaynak direnci ≈ 34 Ω / plaka. Tip veri sayfası; eldeki tüpün kendi verisi değil (docs/veri-sayfalari/).',
       warm: { tauUp: 0.8, tauDown: 2, w0: 0.6 },
     },
   };

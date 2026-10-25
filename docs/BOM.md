@@ -1,6 +1,6 @@
 # Malzeme listesi
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `4bdeedb1`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 Satın alma onayı değildir. Tedarik kaynakları 01.10.2026 tarihinde kontrol edilen adaylardır; stok, fiyat ve teslimat teyit edilmedi. Tolerans, üretici, parça kodu ve paket alanları henüz boştur (veri eksik).
@@ -29,7 +29,7 @@ Satın alma onayı değildir. Tedarik kaynakları 01.10.2026 tarihinde kontrol e
 | C4 | Screen filtresi | 10 µF / 450 V | 1 | RAPOR KARARI · K-10 | ELDE | P1 s.4 |  |
 | R11 | B+2 → B+3 düşürme | 22 kΩ / 2 W | 1 | RAPOR KARARI · K-01 | ELDE | P1 s.11 |  |
 | C5 | Ön yükselteç filtresi | 10 µF / 450 V | 1 | RAPOR KARARI · K-10 | ELDE | P1 s.4 |  |
-| R16 | Bleeder (opsiyonel) | 220 kΩ | 1 | DENEYSEL · K-12 | OPSİYONEL · takılı değil | P1 s.12 |  |
+| R16 | Bleeder | 220 kΩ / 2 W | 1 | RAPOR KARARI · K-12 | SATIN AL | P1 s.12; K-12 (25.10.2026) |  |
 
 ## Giriş
 

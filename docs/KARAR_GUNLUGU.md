@@ -1,27 +1,27 @@
 # Karar günlüğü
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `4bdeedb1`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 "Simülasyon varsayımı" deneysel profildir; Revizyon A'nın kesin kararı değildir.
 
 ## K-01 · B+ filtre zinciri
 
-- **Öncelik / durum:** P0 · ONAY BEKLİYOR
-- **Açık olan:** P1 s.4'teki çizimde 22 kΩ kolunun başlangıcı belirsiz (B+1'den ayrı kol gibi); s.11'de seri zincir açık.
+- **Öncelik / durum:** P0 · KARAR VERİLDİ
+- **Açık olan:** Seri zincir (25.10.2026; kullanıcı kararı asistana bıraktı). P1 s.4'teki 22 kΩ kolunun B+1'den ayrı görünmesi çizim belirsizliği sayıldı. Gerekçe: P1 s.11 seri zinciri açıkça çizer; özgün 5F1 de seri üç düğümlüdür (16 µF → 10 kΩ → 8 µF screen → 22 kΩ → 8 µF ön kat; forum kaynakları, Fender şeması doğrudan okunmadı); 12AX7 iki RC kademesiyle beslenir (100 Hz'de ≈ 79 dB, paralel kolda ≈ 43 dB); bir 5F1 ölçümü (≈ 350 → 273 V) simülasyonla (358 → 269 V) tutarlı.
 - **Simülasyon varsayımı:** Seri zincir: B+1 → 10 kΩ / 2 W → B+2 → 22 kΩ / 2 W → B+3. B+1: OT / güç katı, B+2: screen, B+3: 12AX7 anodik yükleri.
-- **Nasıl kapanır:** Kullanıcı onayı ve tek şemaya aktarım.
+- **Nasıl kapanır:** Kapalı. Nihai şema çizilirken s.4'teki kol s.11'e göre düzeltilir.
 - **Parçalar:** R10, R11, C3, C4, C5
-- **Kaynak:** P1 s.4, s.11; IR §6.1
+- **Kaynak:** P1 s.4, s.11; IR §6.1; 5F1 forum kaynakları (MEF 5884, 14391, 26065)
 
 ## K-02 · Tüp kimlikleri ve çalışma noktası
 
-- **Öncelik / durum:** P0 · AÇIK
-- **Açık olan:** Eldeki 12AX7, 6V6GT ve 5Y3GT'nin üreticisi, tam tipi ve veri sayfası kayıtlı değil.
-- **Simülasyon varsayımı:** Genel Koren / Child modelleri. Sınır değerleri "veri eksik"; JJ değerleri yalnız referans olarak gösterilir.
-- **Nasıl kapanır:** Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.
+- **Öncelik / durum:** P0 · KISMEN
+- **Açık olan:** Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Sınır değerleri tip veri sayfalarından alındı (docs/veri-sayfalari/; tip sınırı üreticiden bağımsızdır). Açık kalan: eldeki tüplerin çalışma noktası ölçümü, V1 üreticisi, V3 baskısının doğrulanması.
+- **Simülasyon varsayımı:** Genel Koren / Child modelleri; eğriler eldeki tüple ölçülmedi. Sınır denetimi K-17'ye göre.
+- **Nasıl kapanır:** İlk açılışta 6V6 katot gerilimi ve V1A / V1B plaka gerilimlerinin ölçülüp modelle karşılaştırılması; gerekirse model parametrelerinin bu ölçüme göre ayarlanması.
 - **Parçalar:** V1A, V1B, V2, V3
-- **Kaynak:** P1 s.3; IR §7
+- **Kaynak:** P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026); docs/veri-sayfalari/
 
 ## K-03 · V1A katot bypass
 
@@ -106,12 +106,12 @@
 
 ## K-12 · Bleeder ağı
 
-- **Öncelik / durum:** P1 · AÇIK
-- **Açık olan:** Rev A'da yok; PCB finalinde değerlendirilecek.
-- **Simülasyon varsayımı:** Takılı değil. 220 kΩ varyantı senaryo olarak denenebilir.
-- **Nasıl kapanır:** Değer, güç ve sürekli yük etkisiyle karar.
+- **Öncelik / durum:** P1 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): bleeder takılsın. Gerekçe EL-14: tüpler iletimde değilken kapatılırsa bleeder'sız B+1 40 s sonra hâlâ ≈ 444 V; 220 kΩ ile ≈ 3 V. Rev A'da yoktu.
+- **Simülasyon varsayımı:** R16 = 220 kΩ / 2 W, B+1 → toprak, varsayılan takılı. Sürekli yük ≈ 1,6 mA; güç ≈ 0,6 W kararlı, ≈ 0,9 W soğuk açılış tepesinde (2 W'ın %47'si). "Sökülü" yalnız arıza senaryosu.
+- **Nasıl kapanır:** Kapalı. Satın almada gerilim sınıfı (≥ ≈ 500 V ya da iki direnç seri) ve PCB'de 2 W yerleşimi kontrol edilir.
 - **Parçalar:** R16
-- **Kaynak:** P1 s.12
+- **Kaynak:** P1 s.12; EL-14
 
 ## K-13 · Şebeke sigortası
 
@@ -124,12 +124,12 @@
 
 ## K-14 · Volume taper
 
-- **Öncelik / durum:** P2 · GEÇİCİ
-- **Açık olan:** Eldeki 1 MΩ lineer pot ilk prototipte kullanılacak.
-- **Simülasyon varsayımı:** Lineer. Log profil karşılaştırma için seçilebilir.
-- **Nasıl kapanır:** İleride 1 MΩ log / audio.
+- **Öncelik / durum:** P2 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): eldeki pot kullanılır; taper çalışmayı ve güvenliği etkilemediği için önemli değil. Pot yerel elektronikçiden, üzerinde işaret yok; raporun "lineer" ifadesi ölçülmedi.
+- **Simülasyon varsayımı:** Lineer varsayılır (yalnız düğme konumu → ses ilişkisini etkiler). Log profil karşılaştırma için seçilebilir.
+- **Nasıl kapanır:** Kapalı. İsteğe bağlı: taper ölçülürse kart güncellenir (orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log); toplam direncin ≈ 1 MΩ olduğu da aynı ölçümle doğrulanır.
 - **Parçalar:** VR1
-- **Kaynak:** P1 s.6
+- **Kaynak:** P1 s.6; kullanıcı, 25.10.2026
 
 ## K-15 · Screen direnci ve 6V6 grid stopper
 
@@ -149,6 +149,15 @@
 - **Parçalar:** J2, J3, J4
 - **Kaynak:** P1 s.9; IR §10
 
+## K-17 · Tüp sınır değerlerinde güvenlik payı
+
+- **Öncelik / durum:** P1 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): tüpler veri sayfası sınırına kadar zorlanmasın, pay bırakılsın. Seçilen yöntem uydurma bir yüzde yerine veri sayfalarının kendi iki sınır sistemini kullanır.
+- **Simülasyon varsayımı:** Design-center üstü uyarı, design-maximum üstü hata; yalnız design-center bilinen tüpte (12AX7, 5Y3GT) design-center üstü hata. Gerilimler katoda göre, şebeke periyodu ortalaması. 6V6GT'de design-center ≈ design-max'ın %86–91'i.
+- **Nasıl kapanır:** Kapalı. Gerçek PT verisi (K-08) ve ilk açılış ölçümünden sonra çalışma noktası yeniden denetlenir.
+- **Parçalar:** V1A, V1B, V2, V3
+- **Kaynak:** docs/veri-sayfalari/ (GE ET-T914, RCA 6V6GTA, GE ET-T509B, RCA 5Y3GT)
+
 ## Deneysel profil DENEYSEL-01
 
 Açık kararlar kapanana kadar simülasyonun çalışabilmesi için seçilen ilk deney değerleri.
@@ -164,7 +173,6 @@ Açık kararlar kapanana kadar simülasyonun çalışabilmesi için seçilen ilk
 | VR4 | 25 kΩ | P1 başlangıç referansı. |
 | C11 | 100 pF | P1 aday aralığının alt ucu (100–220 pF). |
 | C12 | 1 nF | P1 deneme değerlerinin ortası (470 pF / 1 nF / 2,2 nF). |
-| R16 | 220 kΩ (takılı değil) | Opsiyonel varyant değeri. |
 | C7 | 25 µF (takılı değil) | Opsiyonel varyant değeri. |
 | T1 | 320 VAC yüksüz EMK, Rt 200 Ω / plaka | Üretici verisi yok. Rt = 200 Ω küçük bir 320-0-320 V sargı için temsili etkin kaynak direncidir. |
 | T2 | DCR 300 Ω, Lp 15 H, kaçak 30 mH | Üretici verisi yok. P1: "primer DCR birkaç yüz ohm mertebesinde olabilir". |

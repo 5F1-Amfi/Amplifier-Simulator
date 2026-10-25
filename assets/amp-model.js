@@ -534,22 +534,39 @@
     const pkIdeal = idealPeaks(P);
     add(pkIdeal[3].v > 500 ? 'warn' : 'ok', 'İdeal yüksüz tepe (sınır örnekleri)', pkIdeal.map(p => U(p.v, 1) + ' V').join(' · '), 'Gerçek B+ tahmini değil; gerilim marjını sorgulayan ideal örnekler. +%10 ve %5 test varsayımıdır (inceleme raporu §6.2).');
     if (w) {
-      for (const id of ['R10', 'R11', 'R9']) {
+      for (const id of ['R10', 'R11', 'R9', 'R16']) {
+        if (!D.isFitted(id, P)) continue;
         const comp = D.BY_ID[id], p = w.rp[id], pr = comp.rating.W;
         add(p > pr ? 'bad' : p > 0.6 * pr ? 'warn' : 'ok', `${id} güç kaybı`, `${U(p, 2)} W / ${pr} W`, `${comp.fn}. Sürekli çalışmada pay bırakılması önerilir.`);
       }
-      const ref = Tubes.CARDS[P.models.V2].ref;
-      add(w.pa > ref.paW ? 'warn' : 'na', '6V6 anodik güç kaybı', `${U(w.pa, 1)} W`, `Sınır verisi eksik: eldeki 6V6GT\'nin üreticisi bilinmiyor. Yalnız referans: JJ 6V6S ${ref.paW} W. Pa = (Va − Vk) × Ia; Va, B+1\'den OT primer DCR düşümü kadar düşüktür.`);
-      add('na', '6V6 screen güç kaybı', `${U(w.pg2, 2)} W`, 'Pg2 = (Vg2 − Vk) × Ig2. Sınır verisi eksik. Model ekran akımını plaka geriliminden bağımsız hesaplar; kırpılmada düşük tahmin eder.');
-      add(w.A6Max > ref.vaV || w.B2 > ref.vg2V ? 'warn' : 'na', '6V6 plaka / screen gerilimi', `Va ${U(w.A6)} V · Vg2 ${U(w.B2)} V`, `Sınır verisi eksik. Yalnız referans: JJ 6V6S Ua ${ref.vaV} V, Ug2 ${ref.vg2V} V.`);
+      // Tüp sınırları (K-17): design-center üstü uyarı, design-max üstü hata; dm yoksa dc üstü hata.
+      const lim = (L, k, v) => v > (L.dm ? L.dm[k] : L.dc[k]) ? 'bad' : L.dm && v > L.dc[k] ? 'warn' : 'ok';
+      const worst = lvs => lvs.includes('bad') ? 'bad' : lvs.includes('warn') ? 'warn' : 'ok';
+      const tr = x => String(x).replace('.', ',');
+      const of = (L, k, v, u, d = 0) => `${U(v, d)} ${u} / ${tr(L.dc[k])}${L.dm ? ' · ' + tr(L.dm[k]) : ''} ${u}`;
+      const L6 = Tubes.CARDS[P.models.V2].limits, va6 = w.A6 - w.K6, vg26 = w.B2 - w.K6;
+      const why6 = 'Sınır: design-center (GE) · design-max (RCA); tip veri sayfası, eldeki tüp ölçülmedi (K-02, K-17).';
+      add(lim(L6, 'pa', w.pa), '6V6 anodik güç kaybı', of(L6, 'pa', w.pa, 'W', 1), `Pa = (Va − Vk) × Ia; Va, B+1\'den OT primer DCR düşümü kadar düşüktür. ${why6}`);
+      add(lim(L6, 'pg2', w.pg2), '6V6 screen güç kaybı', of(L6, 'pg2', w.pg2, 'W', 2), `Pg2 = (Vg2 − Vk) × Ig2. Model ekran akımını plaka geriliminden bağımsız hesaplar; kırpılmada düşük tahmin eder. ${why6}`);
+      add(worst([lim(L6, 'va', va6), lim(L6, 'vg2', vg26)]), '6V6 plaka / screen gerilimi (katoda göre)', `Va ${of(L6, 'va', va6, 'V')} · Vg2 ${of(L6, 'vg2', vg26, 'V')}`, `Şebeke periyodu ortalaması. Sinyalle plaka salınımı (tepe ${U(w.A6Max)} V) bu DC sınırına girmez. ${why6}`);
+      const L1 = Tubes.CARDS[P.models.V1A].limits;
+      for (const [nm, a, k, i] of [['V1A', w.PA, w.KA, w.i1a], ['V1B', w.PB, w.KB, w.i1b]]) {
+        const va = a - k, pa = va * i;
+        add(worst([lim(L1, 'va', va), lim(L1, 'pa', pa)]), `${nm} plaka gerilimi / gücü`, `${of(L1, 'va', va, 'V')} · ${of(L1, 'pa', pa, 'W', 2)}`, 'GE 12AX7, design-center, her bölüm. Isınmada tüp akım çekmezken plaka B+3\'e yaklaşır; soğuk plaka sınırı veri sayfasında yok.');
+      }
       add(w.ia > 0.04 ? 'warn' : 'ok', 'OT primer DC akımı', `${U(w.ia * 1000, 1)} mA`, 'Şartname: "en az ~40 mA; tercihen ~50 mA". Teklifte DC bias kapasitesi bu çalışma noktasıyla teyit edilmeli.');
-      add('na', 'PT HV sargısı DC yükü', `${U(w.iRect * 1000, 1)} mA ort. · ${U(pk.iRectPk * 1000)} mA tepe / plaka`, '"70 mA"nın tanımı açık (K-08). Ortalama DC akım ile sargının darbeli RMS akımı eşit değildir. 5Y3 tepe akım sınırı: veri eksik.');
+      add('na', 'PT HV sargısı DC yükü', `${U(w.iRect * 1000, 1)} mA ort. · ${U(pk.iRectPk * 1000)} mA tepe / plaka`, '"70 mA"nın tanımı açık (K-08). Ortalama DC akım ile sargının darbeli RMS akımı eşit değildir.');
+      const L5 = Tubes.CARDS[P.models.V3].limits, piv = 2 * Math.SQRT2 * P.T1.vSec;
+      add(worst([lim(L5, 'ipk', w.iRectPk), lim(L5, 'ipkTr', pk.iRectPk), lim(L5, 'idc', w.iRect), lim(L5, 'vac', P.T1.vSec), lim(L5, 'piv', piv)]), '5Y3 doğrultucu sınırları',
+        `tepe ${U(w.iRectPk * 1000)} / ${L5.dc.ipk * 1000} mA · açılış tepesi ${U(pk.iRectPk * 1000)} / ${L5.dc.ipkTr * 1000} mA · DC ${U(w.iRect * 1000)} / ${L5.dc.idc * 1000} mA · ${P.T1.vSec} / ${L5.dc.vac} VRMS · PIV ${U(piv)} / ${L5.dc.piv} V`,
+        'RCA 5Y3GT, design-center. PIV ideal değerdir (2·√2·VAC, yüksüz artış ve şebeke yükselmesi hariç). DC sınırı 350 VRMS içindir; 320 VRMS\'de grafik ≈ 128 mA verir.');
     }
     const hl = heaterLoad(P);
     add(hl.a63 <= 1.5 ? 'ok' : 'bad', '6,3 V heater yükü', `${U(hl.a63, 2)} A / 1,5 A`, 'Model kartlarındaki tipik heater akımları; eldeki tüp setiyle doğrulanmalı. Heater hum için sayı üretilmez.');
     add('ok', '5 V doğrultucu filamanı', `${U(hl.a5, 1)} A / 2 A`, 'Ayrı sargı; B+ potansiyelinde yüzer. 6,3 V sistemiyle birleştirilmez.');
     const r8 = D.resolve('R8', P).value;
-    add('na', '6V6 grid devresi direnci', `${Math.round(r8 / 1000)} kΩ`, 'Sınır verisi eksik. Yalnız referans: JJ 6V6S self-bias ≤ 0,5 MΩ.');
+    const rg1 = Tubes.CARDS[P.models.V2].limits.rg1Ohm;
+    add(r8 > rg1 ? 'bad' : 'ok', '6V6 grid devresi direnci', `${Math.round(r8 / 1000)} kΩ / ${U(rg1 / 1e6, 1)} MΩ`, 'Katot biasta en çok 0,5 MΩ (RCA 6V6GTA, GE 6V6-GT).');
     if (!D.isFitted('R16', P)) add('warn', 'Bleeder', 'yok', 'Güç kesilince filtre kapasitörleri tüpler soğudukça yük bulamaz ve şarj tutar. Boşaldığı ölçülmeden dokunulmaz.');
     return out;
   }

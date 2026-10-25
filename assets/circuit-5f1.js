@@ -20,7 +20,7 @@
   const REVISION = { id: 'Rev A', date: '01.10.2026', schema: 1, title: '5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ' };
 
   // id, tip, işlev, düğümler, değer (SI), birim, + ek alanlar
-  const c = (id, type, fn, nodes, value, unit, x) => Object.assign({ id, type, fn, nodes, value, unit, tol: null, rating: {}, status: 'RAPOR', stock: null, src: '', rapor: null, note: '', supply: [], group: '' }, x);
+  const c = (id, type, fn, nodes, value, unit, x) => Object.assign({ id, type, fn, nodes, value, unit, tol: null, mfr: null, rating: {}, status: 'RAPOR', stock: null, src: '', rapor: null, note: '', supply: [], group: '' }, x);
 
   const COMPONENTS = [
     // --- Şebeke ve besleme --------------------------------------------------------
@@ -31,9 +31,9 @@
     c('T1', 'PT', 'Güç trafosu', ['HA', 'HB', 'GND'], null, '', { stock: 'ÖZEL SARIM', src: 'P1 s.3; IR §24', group: 'Trafolar', supply: ['S1'], decision: 'K-08',
       spec: '230 VAC 50 Hz → 320-0-320 VAC (orta uçlu, ~70 mA) · 5 VAC / 2 A ayrı · 6,3 VAC / 1,5 A',
       note: 'Yüklü / yüksüz gerilim, sargı DCR, regülasyon ve "70 mA"nın tanımı üreticiden yazılı alınmalı. Model bu veriler yerine deneysel profil varsayımı kullanır.' }),
-    c('V3', 'RECT', 'Doğrultucu', ['HA', 'HB', 'B1'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '5Y3-child', decision: 'K-02', spec: '5Y3GT',
+    c('V3', 'RECT', 'Doğrultucu', ['HA', 'HB', 'B1'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '5Y3-child', decision: 'K-02', spec: '5Y3GT', mfr: '"Ultaon" (baskı okunduğu gibi)',
       pins: 'Pin 4 ve 6: HV AC plakalar · Pin 2 ve 8: 5 V filaman; B+ filaman / katot tarafından (pin 8) alınır',
-      note: 'Üretici / varyant kaydedilmedi. Genel model kullanılır.' }),
+      note: 'Baskı: "Ultaon"; altta silik "11gr" (anlamı belirsiz). Satın alımda emisyon testi %95 (test cihazı ve tarihi bilinmiyor). Sınırlar: RCA 5Y3GT tip veri sayfası; model genel.' }),
     c('C3', 'C', 'İlk filtre (reservoir)', ['B1', 'GND'], 16e-6, 'F', { rating: { V: 500 }, stock: 'SATIN AL', src: 'P1 s.4', rapor: 'C3', group: 'Besleme filtresi', supply: ['S2'], decision: 'K-10', polar: true,
       note: 'Türkiye içinde radial 16 µF / 500 V doğrulanamadı; S2 adayı axial. Eldeki 22 µF / 450 V final tercih değildir (yedek).' }),
     c('R10', 'R', 'B+1 → B+2 düşürme', ['B1', 'B2'], 10e3, 'Ω', { rating: { W: 2 }, stock: 'ELDE', src: 'P1 s.4, s.11', group: 'Besleme filtresi', decision: 'K-01' }),
@@ -43,8 +43,8 @@
       note: 'NFB direnci R12 ile aynı değerde ama farklı işlevde; ayrı BOM satırı.' }),
     c('C5', 'C', 'Ön yükselteç filtresi', ['B3', 'GND'], 10e-6, 'F', { rating: { V: 450 }, stock: 'ELDE', src: 'P1 s.4', rapor: 'C5', group: 'Besleme filtresi', decision: 'K-10', polar: true,
       note: 'ELDE / KOŞULLU: ısınma sırasında B+1\'e yaklaşır.' }),
-    c('R16', 'R', 'Bleeder (opsiyonel)', ['B1', 'GND'], null, 'Ω', { status: 'ACIK', stock: 'OPSİYONEL', src: 'P1 s.12', group: 'Besleme filtresi', decision: 'K-12', optional: true, candidates: [220e3, 470e3],
-      note: 'Rev A\'da yok. PCB finalinde değerlendirilecek. Takılırsa sürekli yük ve boşalma modeli değişir.' }),
+    c('R16', 'R', 'Bleeder', ['B1', 'GND'], 220e3, 'Ω', { rating: { W: 2 }, stock: 'SATIN AL', src: 'P1 s.12; K-12 (25.10.2026)', group: 'Besleme filtresi', decision: 'K-12', optional: true,
+      note: 'Takılı (K-12). Kararlı B+1 ≈ 360 V\'ta ≈ 0,6 W, soğuk açılış tepesinde (≈ 452 V) ≈ 0,9 W. Gerilim sınıfı ideal yüksüz tepenin üstünde olmalı (şebeke +%10\'da ≈ 498 V); tek parça yetmiyorsa iki eşit direnç seri. "Opsiyonel" yalnız arıza senaryosu (sökülü / kopuk) içindir.' }),
     c('R14', 'MECH', 'Yapay heater orta ucu (koşullu)', [], 100, 'Ω', { status: 'ACIK', stock: 'KOŞULLU', src: 'P1 s.4', group: 'Heater', qty: 2, decision: 'K-11',
       note: 'Yalnız 6,3 V sargıda fiziksel orta uç yoksa: 2 × ~100 Ω. Güç ve arıza koşulu ayrıca seçilir. Elektrik modeline girmez.' }),
 
@@ -59,7 +59,8 @@
 
     // --- V1A ----------------------------------------------------------------------
     c('V1A', 'TRIODE', 'Giriş katı (12AX7 1. yarı)', ['PA', 'G1', 'KA'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '12AX7-koren', decision: 'K-02', spec: '12AX7 / ECC83',
-      pins: 'Pin 1 plaka · Pin 2 grid · Pin 3 katot · Heater 4+5 / 9 (6,3 V)' }),
+      pins: 'Pin 1 plaka · Pin 2 grid · Pin 3 katot · Heater 4+5 / 9 (6,3 V)',
+      note: 'Baskı: yalnız "ECC83"; marka yok. Satın alımda emisyon testi %100 (test cihazı ve tarihi bilinmiyor). Sınırlar: GE 12AX7 tip veri sayfası; model genel.' }),
     c('R4', 'R', 'V1A anodik yük', ['B3', 'PA'], 100e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
     c('R5', 'R', 'V1A katot', ['KA', 'GND'], 1.5e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
     c('C7', 'C', 'V1A katot bypass (tanımsız)', ['KA', 'GND'], null, 'F', { status: 'ACIK', stock: null, src: 'IR §8', group: 'Sinyal katları', decision: 'K-03', optional: true, candidates: [25e-6, 22e-6], polar: true, rating: { V: 25 },
@@ -80,7 +81,7 @@
 
     // --- Volume ve voicing ---------------------------------------------------------
     c('VR1', 'POT', 'Volume potu', ['VT', 'G2', 'GND'], 1e6, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Volume / voicing', decision: 'K-14', ctl: 'VOLUME', taper: 'lin',
-      note: 'GEÇİCİ: eldeki 1 MΩ lineer. İleride 1 MΩ log / audio ayrı karar.' }),
+      note: 'Eldeki 1 MΩ pot (K-14). Yerel elektronikçiden; üzerinde taper işareti yok, taper ölçülmedi. Simülatör lineer varsayar. Ölçüm: orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log.' }),
     c('S3', 'SW', 'Bright anahtarı', [], null, '', { stock: 'SATIN AL', src: 'P1 s.7', group: 'Anahtarlar', supply: ['S7'], spec: 'Tutmalı ON/OFF (SPST)' }),
     c('C11', 'C', 'Bright kapasitörü', ['S3X', 'G2'], null, 'F', { status: 'ACIK', src: 'P1 s.7', group: 'Volume / voicing', decision: 'K-07', candidates: [100e-12, 220e-12], rating: { V: 630 },
       note: 'Volume potunun giriş – wiper uçları arasında.' }),
@@ -98,9 +99,9 @@
       note: 'Sabit 4 Ω tapından V1B katoduna. Kabin 8 / 16 Ω jaka taşınınca kaynak tapı değişmez.' }),
     c('C2', 'C', 'V1B → 6V6 kuplaj', ['PB', 'G6'], 22e-9, 'F', { rating: { V: 630 }, stock: 'SATIN AL', src: 'P1 s.6, s.10', group: 'Sinyal katları', supply: ['S3', 'S4'] }),
     c('R8', 'R', '6V6 grid leak', ['G6', 'GND'], 220e3, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Sinyal katları' }),
-    c('V2', 'PENTODE', 'Güç tüpü', ['A6', 'B2', 'G6', 'K6'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '6V6-koren', decision: 'K-02', spec: '6V6GT',
+    c('V2', 'PENTODE', 'Güç tüpü', ['A6', 'B2', 'G6', 'K6'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '6V6-koren', decision: 'K-02', spec: '6V6GT', mfr: 'Hitachi (Japan)',
       pins: 'Pin 2/7 heater · Pin 3 plaka · Pin 4 screen · Pin 5 kontrol gridi · Pin 8 katot',
-      note: 'Screen doğrudan B+2\'ye: raporda screen direnci ve grid stopper tanımlı değil (K-15).' }),
+      note: 'Baskı: "6V6-GT HITACHI JAPAN". Sınırlar: GE 6V6-GT ve RCA 6V6GTA tip veri sayfaları; model genel. Screen doğrudan B+2\'ye: raporda screen direnci ve grid stopper tanımlı değil (K-15).' }),
     c('R9', 'R', '6V6 katot (cathode bias)', ['K6', 'GND'], 470, 'Ω', { rating: { W: 5 }, stock: 'ELDE', src: 'P1 s.5–6', group: 'Sinyal katları', note: 'Karttan birkaç mm yükseltilerek monte edilir.' }),
     c('C6', 'C', '6V6 katot bypass', ['K6', 'GND'], 22e-6, 'F', { rating: { V: 50 }, stock: 'ELDE', src: 'P1 s.4', group: 'Sinyal katları', polar: true, note: '25 µF yerine 22 µF. Polarite, ESR ve gerçek katot gerilimi kontrol edilir.' }),
     c('T2', 'OT', 'Çıkış trafosu', ['B1', 'A6', 'S4', 'S8', 'S16'], null, '', { stock: 'ÖZEL SARIM', src: 'P1 s.7–8; IR §24', group: 'Trafolar', supply: ['S1'], decision: 'K-09',
@@ -122,14 +123,14 @@
 
   // --- Karar günlüğü -----------------------------------------------------------------
   const DECISIONS = [
-    { id: 'K-01', pri: 'P0', title: 'B+ filtre zinciri', state: 'ONAY BEKLİYOR', parts: ['R10', 'R11', 'C3', 'C4', 'C5'],
-      open: 'P1 s.4\'teki çizimde 22 kΩ kolunun başlangıcı belirsiz (B+1\'den ayrı kol gibi); s.11\'de seri zincir açık.',
+    { id: 'K-01', pri: 'P0', title: 'B+ filtre zinciri', state: 'KARAR VERİLDİ', parts: ['R10', 'R11', 'C3', 'C4', 'C5'],
+      open: 'Seri zincir (25.10.2026; kullanıcı kararı asistana bıraktı). P1 s.4\'teki 22 kΩ kolunun B+1\'den ayrı görünmesi çizim belirsizliği sayıldı. Gerekçe: P1 s.11 seri zinciri açıkça çizer; özgün 5F1 de seri üç düğümlüdür (16 µF → 10 kΩ → 8 µF screen → 22 kΩ → 8 µF ön kat; forum kaynakları, Fender şeması doğrudan okunmadı); 12AX7 iki RC kademesiyle beslenir (100 Hz\'de ≈ 79 dB, paralel kolda ≈ 43 dB); bir 5F1 ölçümü (≈ 350 → 273 V) simülasyonla (358 → 269 V) tutarlı.',
       sim: 'Seri zincir: B+1 → 10 kΩ / 2 W → B+2 → 22 kΩ / 2 W → B+3. B+1: OT / güç katı, B+2: screen, B+3: 12AX7 anodik yükleri.',
-      close: 'Kullanıcı onayı ve tek şemaya aktarım.', src: 'P1 s.4, s.11; IR §6.1' },
-    { id: 'K-02', pri: 'P0', title: 'Tüp kimlikleri ve çalışma noktası', state: 'AÇIK', parts: ['V1A', 'V1B', 'V2', 'V3'],
-      open: 'Eldeki 12AX7, 6V6GT ve 5Y3GT\'nin üreticisi, tam tipi ve veri sayfası kayıtlı değil.',
-      sim: 'Genel Koren / Child modelleri. Sınır değerleri "veri eksik"; JJ değerleri yalnız referans olarak gösterilir.',
-      close: 'Tüplerin fotoğrafı ve veri sayfası kaydı; model kartlarının güncellenmesi.', src: 'P1 s.3; IR §7' },
+      close: 'Kapalı. Nihai şema çizilirken s.4\'teki kol s.11\'e göre düzeltilir.', src: 'P1 s.4, s.11; IR §6.1; 5F1 forum kaynakları (MEF 5884, 14391, 26065)' },
+    { id: 'K-02', pri: 'P0', title: 'Tüp kimlikleri ve çalışma noktası', state: 'KISMEN', parts: ['V1A', 'V1B', 'V2', 'V3'],
+      open: 'Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Sınır değerleri tip veri sayfalarından alındı (docs/veri-sayfalari/; tip sınırı üreticiden bağımsızdır). Açık kalan: eldeki tüplerin çalışma noktası ölçümü, V1 üreticisi, V3 baskısının doğrulanması.',
+      sim: 'Genel Koren / Child modelleri; eğriler eldeki tüple ölçülmedi. Sınır denetimi K-17\'ye göre.',
+      close: 'İlk açılışta 6V6 katot gerilimi ve V1A / V1B plaka gerilimlerinin ölçülüp modelle karşılaştırılması; gerekirse model parametrelerinin bu ölçüme göre ayarlanması.', src: 'P1 s.3; IR §7; tüp baskıları (kullanıcı, 25.10.2026); docs/veri-sayfalari/' },
     { id: 'K-03', pri: 'P0', title: 'V1A katot bypass', state: 'AÇIK', parts: ['C7'],
       open: 'Raporda V1A katodu yalnız 1,5 kΩ; bypass kondansatörü tanımlı değil.',
       sim: 'Takılı değil (rapordaki tanım). 25 µF varyantı ayrı senaryo olarak denenebilir.',
@@ -164,14 +165,16 @@
     { id: 'K-11', pri: 'P1', title: 'Heater orta ucu', state: 'AÇIK', parts: ['R14'],
       open: 'Fiziksel 6,3 V orta uç ya da 2 × 100 Ω yapay orta uç.', sim: 'Elektrik modeline girmez; ikisi aynı anda eklenmez.',
       close: 'PT teklifine göre.', src: 'P1 s.4; IR §7.3' },
-    { id: 'K-12', pri: 'P1', title: 'Bleeder ağı', state: 'AÇIK', parts: ['R16'],
-      open: 'Rev A\'da yok; PCB finalinde değerlendirilecek.', sim: 'Takılı değil. 220 kΩ varyantı senaryo olarak denenebilir.',
-      close: 'Değer, güç ve sürekli yük etkisiyle karar.', src: 'P1 s.12' },
+    { id: 'K-12', pri: 'P1', title: 'Bleeder ağı', state: 'KARAR VERİLDİ', parts: ['R16'],
+      open: 'Kullanıcı (25.10.2026): bleeder takılsın. Gerekçe EL-14: tüpler iletimde değilken kapatılırsa bleeder\'sız B+1 40 s sonra hâlâ ≈ 444 V; 220 kΩ ile ≈ 3 V. Rev A\'da yoktu.',
+      sim: 'R16 = 220 kΩ / 2 W, B+1 → toprak, varsayılan takılı. Sürekli yük ≈ 1,6 mA; güç ≈ 0,6 W kararlı, ≈ 0,9 W soğuk açılış tepesinde (2 W\'ın %47\'si). "Sökülü" yalnız arıza senaryosu.',
+      close: 'Kapalı. Satın almada gerilim sınıfı (≥ ≈ 500 V ya da iki direnç seri) ve PCB\'de 2 W yerleşimi kontrol edilir.', src: 'P1 s.12; EL-14' },
     { id: 'K-13', pri: 'P1', title: 'Şebeke sigortası', state: 'AÇIK', parts: ['F1'],
       open: 'PT VA ve inrush verisi olmadan seçilemez.', sim: 'Modelde yok.', close: 'PT verisinden sonra 250 V sigorta seçimi.', src: 'P1 s.4, s.12' },
-    { id: 'K-14', pri: 'P2', title: 'Volume taper', state: 'GEÇİCİ', parts: ['VR1'],
-      open: 'Eldeki 1 MΩ lineer pot ilk prototipte kullanılacak.', sim: 'Lineer. Log profil karşılaştırma için seçilebilir.',
-      close: 'İleride 1 MΩ log / audio.', src: 'P1 s.6' },
+    { id: 'K-14', pri: 'P2', title: 'Volume taper', state: 'KARAR VERİLDİ', parts: ['VR1'],
+      open: 'Kullanıcı (25.10.2026): eldeki pot kullanılır; taper çalışmayı ve güvenliği etkilemediği için önemli değil. Pot yerel elektronikçiden, üzerinde işaret yok; raporun "lineer" ifadesi ölçülmedi.',
+      sim: 'Lineer varsayılır (yalnız düğme konumu → ses ilişkisini etkiler). Log profil karşılaştırma için seçilebilir.',
+      close: 'Kapalı. İsteğe bağlı: taper ölçülürse kart güncellenir (orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log); toplam direncin ≈ 1 MΩ olduğu da aynı ölçümle doğrulanır.', src: 'P1 s.6; kullanıcı, 25.10.2026' },
     { id: 'K-15', pri: 'P2', title: 'Screen direnci ve 6V6 grid stopper', state: 'TANIMSIZ', parts: ['V2'],
       open: 'Raporda kesin değerli parça olarak yok.', sim: 'Eklenmedi: screen doğrudan B+2, grid doğrudan C2 / R8 düğümü.',
       close: 'Gerekçeli tasarım kararı verilirse eklenir.', src: 'IR §20' },
@@ -179,6 +182,10 @@
       open: 'Otomobil hoparlörünün empedans eğrisi, T/S ve hassasiyeti bilinmiyor.',
       sim: 'Omik yük direnci (dummy load). Giriş: ideal kaynak ya da temsili manyetik + kablo.',
       close: 'Hoparlör ölçümü; SPL / kabin tonu iddiası yapılmaz.', src: 'P1 s.9; IR §10' },
+    { id: 'K-17', pri: 'P1', title: 'Tüp sınır değerlerinde güvenlik payı', state: 'KARAR VERİLDİ', parts: ['V1A', 'V1B', 'V2', 'V3'],
+      open: 'Kullanıcı (25.10.2026): tüpler veri sayfası sınırına kadar zorlanmasın, pay bırakılsın. Seçilen yöntem uydurma bir yüzde yerine veri sayfalarının kendi iki sınır sistemini kullanır.',
+      sim: 'Design-center üstü uyarı, design-maximum üstü hata; yalnız design-center bilinen tüpte (12AX7, 5Y3GT) design-center üstü hata. Gerilimler katoda göre, şebeke periyodu ortalaması. 6V6GT\'de design-center ≈ design-max\'ın %86–91\'i.',
+      close: 'Kapalı. Gerçek PT verisi (K-08) ve ilk açılış ölçümünden sonra çalışma noktası yeniden denetlenir.', src: 'docs/veri-sayfalari/ (GE ET-T914, RCA 6V6GTA, GE ET-T509B, RCA 5Y3GT)' },
   ];
 
   /**
@@ -189,8 +196,8 @@
     id: 'DENEYSEL-01', schema: 1, base: 'Rev A', approved: false,
     name: 'RAW / NORMAL başlangıç profili',
     why: 'Açık kararlar kapanana kadar simülasyonun çalışabilmesi için seçilen ilk deney değerleri.',
-    values: { C8: 250e-12, R13: 56e3, C9: 22e-9, C10: 22e-9, VR2: 250e3, VR3: 1e6, VR4: 25e3, C11: 100e-12, C12: 1e-9, R16: 220e3, C7: 25e-6 },
-    fitted: { C7: false, R16: false },
+    values: { C8: 250e-12, R13: 56e3, C9: 22e-9, C10: 22e-9, VR2: 250e3, VR3: 1e6, VR4: 25e3, C11: 100e-12, C12: 1e-9, C7: 25e-6 },
+    fitted: { C7: false, R16: true },                         // R16: K-12 kapandı (takılı); sökme yalnız arıza senaryosu
     tapers: { VR1: 'lin', VR2: 'lin', VR3: 'log', VR4: 'lin' },
     rawMethod: 'lift',
     T1: { vSec: 320, rt: 200, noLoadRisePct: 0, mainsNom: 230, freq: 50 },
