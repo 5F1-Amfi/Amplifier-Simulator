@@ -42,7 +42,8 @@
     for (let i = 0; i < n; i++) d += ` a${st / 2} ${st / 2} 0 0 ${side > 0 ? 1 : 0} 0 ${st}`;
     return `<path class="coil" d="${d}"/>`;
   };
-  const delta = (x, y, kid) => `<g class="delta" data-decision="${kid}" tabindex="0" role="button" aria-label="Açık karar ${kid}"><path d="M${x} ${y - 9} l10 18 h-20 z"/>${T(x, y + 6.5, kid.replace('K-', '').replace(/^0/, ''), 'deltanum', 'middle')}</g>`;
+  const CLOSED = new Set(D.DECISIONS.filter(d => d.state === 'KARAR VERİLDİ').map(d => d.id));
+  const delta = (x, y, kid) => CLOSED.has(kid) ? '' : `<g class="delta" data-decision="${kid}" tabindex="0" role="button" aria-label="Açık karar ${kid}"><path d="M${x} ${y - 9} l10 18 h-20 z"/>${T(x, y + 6.5, kid.replace('K-', '').replace(/^0/, ''), 'deltanum', 'middle')}</g>`;
 
   function build(meta, profile, state) {
     const s = [], ids = [];

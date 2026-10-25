@@ -7,12 +7,12 @@
 
 ## K-01 · B+ filtre zinciri
 
-- **Öncelik / durum:** P0 · ONAY BEKLİYOR
-- **Açık olan:** P1 s.4'teki çizimde 22 kΩ kolunun başlangıcı belirsiz (B+1'den ayrı kol gibi); s.11'de seri zincir açık.
+- **Öncelik / durum:** P0 · KARAR VERİLDİ
+- **Açık olan:** Seri zincir (25.10.2026; kullanıcı kararı asistana bıraktı). P1 s.4'teki 22 kΩ kolunun B+1'den ayrı görünmesi çizim belirsizliği sayıldı. Gerekçe: P1 s.11 seri zinciri açıkça çizer; özgün 5F1 de seri üç düğümlüdür (16 µF → 10 kΩ → 8 µF screen → 22 kΩ → 8 µF ön kat; forum kaynakları, Fender şeması doğrudan okunmadı); 12AX7 iki RC kademesiyle beslenir (100 Hz'de ≈ 79 dB, paralel kolda ≈ 43 dB); bir 5F1 ölçümü (≈ 350 → 273 V) simülasyonla (358 → 269 V) tutarlı.
 - **Simülasyon varsayımı:** Seri zincir: B+1 → 10 kΩ / 2 W → B+2 → 22 kΩ / 2 W → B+3. B+1: OT / güç katı, B+2: screen, B+3: 12AX7 anodik yükleri.
-- **Nasıl kapanır:** Kullanıcı onayı ve tek şemaya aktarım.
+- **Nasıl kapanır:** Kapalı. Nihai şema çizilirken s.4'teki kol s.11'e göre düzeltilir.
 - **Parçalar:** R10, R11, C3, C4, C5
-- **Kaynak:** P1 s.4, s.11; IR §6.1
+- **Kaynak:** P1 s.4, s.11; IR §6.1; 5F1 forum kaynakları (MEF 5884, 14391, 26065)
 
 ## K-02 · Tüp kimlikleri ve çalışma noktası
 

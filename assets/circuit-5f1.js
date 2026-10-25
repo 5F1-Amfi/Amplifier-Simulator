@@ -123,10 +123,10 @@
 
   // --- Karar günlüğü -----------------------------------------------------------------
   const DECISIONS = [
-    { id: 'K-01', pri: 'P0', title: 'B+ filtre zinciri', state: 'ONAY BEKLİYOR', parts: ['R10', 'R11', 'C3', 'C4', 'C5'],
-      open: 'P1 s.4\'teki çizimde 22 kΩ kolunun başlangıcı belirsiz (B+1\'den ayrı kol gibi); s.11\'de seri zincir açık.',
+    { id: 'K-01', pri: 'P0', title: 'B+ filtre zinciri', state: 'KARAR VERİLDİ', parts: ['R10', 'R11', 'C3', 'C4', 'C5'],
+      open: 'Seri zincir (25.10.2026; kullanıcı kararı asistana bıraktı). P1 s.4\'teki 22 kΩ kolunun B+1\'den ayrı görünmesi çizim belirsizliği sayıldı. Gerekçe: P1 s.11 seri zinciri açıkça çizer; özgün 5F1 de seri üç düğümlüdür (16 µF → 10 kΩ → 8 µF screen → 22 kΩ → 8 µF ön kat; forum kaynakları, Fender şeması doğrudan okunmadı); 12AX7 iki RC kademesiyle beslenir (100 Hz\'de ≈ 79 dB, paralel kolda ≈ 43 dB); bir 5F1 ölçümü (≈ 350 → 273 V) simülasyonla (358 → 269 V) tutarlı.',
       sim: 'Seri zincir: B+1 → 10 kΩ / 2 W → B+2 → 22 kΩ / 2 W → B+3. B+1: OT / güç katı, B+2: screen, B+3: 12AX7 anodik yükleri.',
-      close: 'Kullanıcı onayı ve tek şemaya aktarım.', src: 'P1 s.4, s.11; IR §6.1' },
+      close: 'Kapalı. Nihai şema çizilirken s.4\'teki kol s.11\'e göre düzeltilir.', src: 'P1 s.4, s.11; IR §6.1; 5F1 forum kaynakları (MEF 5884, 14391, 26065)' },
     { id: 'K-02', pri: 'P0', title: 'Tüp kimlikleri ve çalışma noktası', state: 'KISMEN', parts: ['V1A', 'V1B', 'V2', 'V3'],
       open: 'Kimlikler tüp baskısından kaydedildi (25.10.2026): V1 "ECC83", markasız, emisyon %100; V2 Hitachi 6V6-GT (Japan); V3 "Ultaon" 5Y3GT, silik "11gr", emisyon %95. Sınır değerleri tip veri sayfalarından alındı (docs/veri-sayfalari/; tip sınırı üreticiden bağımsızdır). Açık kalan: eldeki tüplerin çalışma noktası ölçümü, V1 üreticisi, V3 baskısının doğrulanması.',
       sim: 'Genel Koren / Child modelleri; eğriler eldeki tüple ölçülmedi. Sınır denetimi K-17\'ye göre.',

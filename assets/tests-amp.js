@@ -104,7 +104,7 @@
         const got = { R10: R('R10'), R11: R('R11'), C3: C('C3'), C4: C('C4'), C5: C('C5'), OT: R('T2.rp').split('–')[0], screen: N('V2')[1], R4: R('R4'), R6: R('R6'), rect: N('V3.a')[1] };
         const want = { R10: 'B1–B2', R11: 'B2–B3', C3: 'B1–GND', C4: 'B2–GND', C5: 'B3–GND', OT: 'B1', screen: 'B2', R4: 'B3–PA', R6: 'B3–PB', rect: 'B1' };
         const bad = Object.keys(want).filter(k => got[k] !== want[k]);
-        return res(!bad.length, bad.length ? 'Uyuşmayan: ' + bad.map(k => `${k}=${got[k]}`).join(', ') : 'B+1→R10→B+2→R11→B+3; C3/C4/C5 ve yükler doğru düğümde', 'B+1: OT + 5Y3 katodu · B+2: screen · B+3: R4, R6', 'Seri zincir yorumu kullanıcı onayı bekliyor (K-01).');
+        return res(!bad.length, bad.length ? 'Uyuşmayan: ' + bad.map(k => `${k}=${got[k]}`).join(', ') : 'B+1→R10→B+2→R11→B+3; C3/C4/C5 ve yükler doğru düğümde', 'B+1: OT + 5Y3 katodu · B+2: screen · B+3: R4, R6', 'Seri zincir kararlaştırıldı (K-01).');
       } },
     { id: 'EL-02', group: 'Elektriksel', title: 'High / Low, ideal kaynak (pasif ağ)', req: 'P1 s.5',
       run() {
