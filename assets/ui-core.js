@@ -81,7 +81,7 @@
   function buildPanel() {
     const st = B.st, def = Amp.defaultState();
     const pot = (id, label) => `<label class="ctl ${st.pots[id] !== def.pots[id] ? 'changed' : ''}"><b>${label}<span id="pv-${id}">%${Math.round(st.pots[id] * 100)}</span></b><input type="range" min="0" max="100" step="1" value="${Math.round(st.pots[id] * 100)}" data-pot="${id}" aria-label="${label}"></label>`;
-    const tgN = (sid, label, opts) => `<div class="ctl ${st.sw[sid] !== def.sw[sid] ? 'changed' : ''}"><b>${label}</b><div class="tg" role="group" aria-label="${label}">${opts.map(([p, l]) => `<button data-sw="${sid}" data-pos="${p}" aria-pressed="${st.sw[sid] === p}">${l}</button>`).join('')}</div></div>`;
+    const tgN = (sid, label, opts) => `<div class="ctl ${opts.length > 2 ? 'tg3' : ''} ${st.sw[sid] !== def.sw[sid] ? 'changed' : ''}"><b>${label}</b><div class="tg" role="group" aria-label="${label}">${opts.map(([p, l]) => `<button data-sw="${sid}" data-pos="${p}" aria-pressed="${st.sw[sid] === p}">${l}</button>`).join('')}</div></div>`;
     const tg = (sid, label, a, b, la, lb) => tgN(sid, label, [[a, la], [b, lb]]);
     const ls = Amp.loadStatus(B.profile, st);
     const jack = (id, label) => `<label class="ctl ${ls.danger ? 'danger' : st.loads[id] != null ? 'active' : ''}"><b>${label}</b><select data-load="${id}" aria-label="${label} jakındaki yük">${LOADS.map(([v, t]) => `<option value="${v}" ${String(st.loads[id] ?? '') === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`;
