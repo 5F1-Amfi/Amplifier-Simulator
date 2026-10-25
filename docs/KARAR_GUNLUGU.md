@@ -1,6 +1,6 @@
 # Karar günlüğü
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `2c2e1b56`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 "Simülasyon varsayımı" deneysel profildir; Revizyon A'nın kesin kararı değildir.
@@ -157,6 +157,15 @@
 - **Nasıl kapanır:** Kapalı. Gerçek PT verisi (K-08) ve ilk açılış ölçümünden sonra çalışma noktası yeniden denetlenir.
 - **Parçalar:** V1A, V1B, V2, V3
 - **Kaynak:** docs/veri-sayfalari/ (GE ET-T914, RCA 6V6GTA, GE ET-T509B, RCA 5Y3GT)
+
+## K-18 · Bright / Dark tek anahtar
+
+- **Öncelik / durum:** P1 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): bright ve dark için tek anahtar; "diğer amfilerde nasıl çalışıyorsa". Rev A'da iki ayrı SPST (S3 Bright, S4 Dark) vardı; özgün 5F1'de ikisi de yok.
+- **Simülasyon varsayımı:** Tek SPDT ON-OFF-ON (S3): BRIGHT / NORMAL / DARK. Ortak uç wiper; C11 wiper ile VR1 giriş ucu arasına, C12 wiper ile toprak arasına bağlanır. Her iki ton tek başına Rev A ile aynıdır; "ikisi birden" konumu kalkar. S4 referansı kaldırıldı.
+- **Nasıl kapanır:** Kapalı. C11 / C12 değerleri K-07'de açık (dinleme). Panel delik sayısı bir azalır.
+- **Parçalar:** S3, C11, C12
+- **Kaynak:** P1 s.7; kullanıcı, 25.10.2026
 
 ## Deneysel profil DENEYSEL-01
 

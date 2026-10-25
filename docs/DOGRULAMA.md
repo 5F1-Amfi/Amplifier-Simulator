@@ -1,6 +1,6 @@
 # Doğrulama notu
 
-> 5F1 Modifiye · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a` · 25.10.2026 (R16 bleeder takılı, K-12)
+> 5F1 Modifiye · Rev A · profil DENEYSEL-01 · devre kimliği `2c2e1b56` · 25.10.2026 (R16 bleeder takılı, K-12; tek Bright / Dark anahtarı, K-18)
 > Ham sonuçlar: `docs/test-sonuclari.json` (`node tests/run-tests.js --json`).
 
 ## Özet

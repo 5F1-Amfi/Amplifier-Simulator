@@ -158,15 +158,16 @@
     s.push(pV.svg + gnd(VTX, 354) + dot(VTX, VTY) + delta(640, 318, 'K-14'));
     const GX = 700;
     s.push(W([[VTX + 26, pV.yw], [GX, pV.yw], [GX, Y]]) + W([[GX, Y], [723, Y]]) + dot(GX, Y) + dot(GX, pV.yw));
-    // Bright: VT – wiper arası (C11, wiper hattının üstünde)
-    s.push(part('S3', [664, 100, 60, 34], T(668, 112, `S3 ${state.sw.S3 === 'ON' ? 'BRIGHT' : 'kapalı'}`, 'swl', 'start') +
-      (state.sw.S3 === 'ON' ? W([[VTX, VTY], [GX, VTY]]) : W([[VTX, VTY], [674, VTY]]) + `<line class="sym-l blade" x1="674" y1="${VTY}" x2="694" y2="${VTY - 12}"/>`) +
-      `<circle class="pin" cx="674" cy="${VTY}" r="2.4"/><circle class="pin" cx="${GX}" cy="${VTY}" r="2.4"/>`));
-    s.push(capV('C11', GX, VTY, 210) + W([[GX, 210], [GX, pV.yw]]));
-    // Dark: G2 – toprak
-    s.push(part('S4', [640, 372, 56, 20], T(644, 386, `S4 ${state.sw.S4 === 'ON' ? 'DARK' : 'kapalı'}`, 'swl', 'start')));
-    s.push((state.sw.S4 === 'ON' ? W([[GX, Y], [GX, 296]]) : W([[GX, Y], [GX, 272]]) + `<line class="sym-l blade" x1="${GX}" y1="272" x2="${GX + 12}" y2="292"/>`) +
-      `<circle class="pin" cx="${GX}" cy="272" r="2.4"/><circle class="pin" cx="${GX}" cy="296" r="2.4"/>`);
+    // Bright / Dark: tek SPDT ON-OFF-ON (S3, K-18). Ortak uç wiper; iki kontak aynı kolun iki yanı (kesikli çizgi).
+    const sw3 = state.sw.S3, br = sw3 === 'BRIGHT', dk = sw3 === 'DARK';
+    s.push(W([[VTX, VTY], [GX, VTY]]) + capV('C11', GX, VTY, 192));
+    s.push(part('S3', [GX - 60, 188, 82, 204], T(644, 386, `S3 ${sw3}`, 'swl', 'start') + T(GX + 16, 206, 'S3', 'swl', 'start') +
+      (br ? W([[GX, 192], [GX, 214]]) : `<line class="sym-l blade" x1="${GX}" y1="214" x2="${GX + 12}" y2="196"/>`) +
+      `<circle class="pin" cx="${GX}" cy="192" r="2.4"/><circle class="pin" cx="${GX}" cy="214" r="2.4"/>` +
+      (dk ? W([[GX, 272], [GX, 296]]) : `<line class="sym-l blade" x1="${GX}" y1="272" x2="${GX + 12}" y2="292"/>`) +
+      `<circle class="pin" cx="${GX}" cy="272" r="2.4"/><circle class="pin" cx="${GX}" cy="296" r="2.4"/>` +
+      `<line class="sym-l" x1="${GX + 8}" y1="${br ? 203 : 205}" x2="${GX + 8}" y2="${dk ? 284 : 282}" stroke-dasharray="3 3"/>`));
+    s.push(W([[GX, 214], [GX, pV.yw]]) + W([[GX, Y], [GX, 272]]));
     s.push(capV('C12', GX, 296, 384, 'l') + gnd(GX, GY) + delta(712, 356, 'K-07'));
 
     // --- V1B ---

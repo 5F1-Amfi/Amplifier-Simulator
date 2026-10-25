@@ -1,4 +1,4 @@
-* 5F1 Modifiye Rev A · profil DENEYSEL-01 · RAW / NORMAL · 6a14dc7a
+* 5F1 Modifiye Rev A · profil DENEYSEL-01 · RAW / NORMAL · 2c2e1b56
 * Kanonik tanımdan üretildi; düğüm adları anahtar konumlarına göre birleştirilmiştir.
 R_T1.ra T1SA HA 200
 R_T1.rb T1SB HB 200
@@ -38,7 +38,7 @@ C_C1 PA CO1 2.2e-8
 C_C8 TSI TT 2.5e-10
 C_C9 SJ TB 2.2e-8
 C_C10 SJ MT 2.2e-8
-C_C11 S3X G2 1e-10
+C_C11 CO1 S3X 1e-10
 C_C12 S4X 0 1e-9
 C_V1B.cgp G2 PB 1.7e-12
 C_V1B.cgk G2 KB 1.6e-12

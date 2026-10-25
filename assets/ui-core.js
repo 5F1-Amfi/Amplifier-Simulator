@@ -81,7 +81,8 @@
   function buildPanel() {
     const st = B.st, def = Amp.defaultState();
     const pot = (id, label) => `<label class="ctl ${st.pots[id] !== def.pots[id] ? 'changed' : ''}"><b>${label}<span id="pv-${id}">%${Math.round(st.pots[id] * 100)}</span></b><input type="range" min="0" max="100" step="1" value="${Math.round(st.pots[id] * 100)}" data-pot="${id}" aria-label="${label}"></label>`;
-    const tg = (sid, label, a, b, la, lb) => `<div class="ctl ${st.sw[sid] !== def.sw[sid] ? 'changed' : ''}"><b>${label}</b><div class="tg" role="group" aria-label="${label}"><button data-sw="${sid}" data-pos="${a}" aria-pressed="${st.sw[sid] === a}">${la}</button><button data-sw="${sid}" data-pos="${b}" aria-pressed="${st.sw[sid] === b}">${lb}</button></div></div>`;
+    const tgN = (sid, label, opts) => `<div class="ctl ${st.sw[sid] !== def.sw[sid] ? 'changed' : ''}"><b>${label}</b><div class="tg" role="group" aria-label="${label}">${opts.map(([p, l]) => `<button data-sw="${sid}" data-pos="${p}" aria-pressed="${st.sw[sid] === p}">${l}</button>`).join('')}</div></div>`;
+    const tg = (sid, label, a, b, la, lb) => tgN(sid, label, [[a, la], [b, lb]]);
     const ls = Amp.loadStatus(B.profile, st);
     const jack = (id, label) => `<label class="ctl ${ls.danger ? 'danger' : st.loads[id] != null ? 'active' : ''}"><b>${label}</b><select data-load="${id}" aria-label="${label} jakındaki yük">${LOADS.map(([v, t]) => `<option value="${v}" ${String(st.loads[id] ?? '') === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`;
     $('ampPanel').innerHTML =
@@ -90,7 +91,7 @@
       `<div style="display:flex;gap:4px"><select data-src="freq" aria-label="Test frekansı">${FREQS.map(f => `<option value="${f}" ${st.src.freq === f ? 'selected' : ''}>${String(f).replace('.', ',')} Hz</option>`).join('')}</select>` +
       `<select data-src="kind" aria-label="Kaynak modeli"><option value="ideal" ${st.src.kind === 'ideal' ? 'selected' : ''}>ideal</option><option value="pickup" ${st.src.kind === 'pickup' ? 'selected' : ''}>manyetik</option></select></div></div>` +
       tg('S1', 'Hi / Lo', 'HIGH', 'LOW', 'High', 'Low') + pot('VR3', 'Bass') + pot('VR4', 'Mid') + pot('VR2', 'Treble') +
-      tg('S2', 'EQ / RAW', 'EQ', 'RAW', 'EQ', 'RAW') + tg('S3', 'Bright', 'OFF', 'ON', 'kapalı', 'açık') + tg('S4', 'Dark', 'OFF', 'ON', 'kapalı', 'açık') + pot('VR1', 'Volume') + `</div>` +
+      tg('S2', 'EQ / RAW', 'EQ', 'RAW', 'EQ', 'RAW') + tgN('S3', 'Bright / Dark', [['DARK', 'Dark'], ['NORMAL', 'Normal'], ['BRIGHT', 'Bright']]) +pot('VR1', 'Volume') + `</div>` +
       `<div class="eyebrow" style="font-size:10.5px;color:var(--ink-3)">Arka panel · hoparlör yükü (omik) ve şebeke</div><div class="amp-row">` +
       jack('J2', '4 Ω çıkış') + jack('J3', '8 Ω çıkış') + jack('J4', '16 Ω çıkış') +
       `<label class="ctl ${st.mainsV !== 230 ? 'changed' : ''}"><b>Şebeke</b><select data-mains aria-label="Şebeke gerilimi">${[207, 220, 230, 240, 253].map(v => `<option value="${v}" ${st.mainsV === v ? 'selected' : ''}>${v} VAC</option>`).join('')}</select></label>` +
@@ -243,6 +244,12 @@
       if (!cfg || cfg.kind !== '5f1-amp-lab-config') { note.textContent = 'İçe aktarılamadı: bu dosya bir 5F1 tezgâh konfigürasyonu değil.'; return; }
       const errs = D.validateProfile(cfg.profile);
       if (errs.length) { note.textContent = 'Profil reddedildi: ' + errs[0]; return; }
+      // K-18 öncesi dosyalar: ayrı S3 (Bright) / S4 (Dark). İkisi birden açıksa artık karşılığı yok: reddedilir.
+      const sw = cfg.state && cfg.state.sw;
+      if (sw && 'S4' in sw) {
+        if (sw.S3 === 'ON' && sw.S4 === 'ON') { note.textContent = 'Durum reddedildi: Bright ve Dark birlikte açık; tek anahtarda (K-18) bu konum yok.'; return; }
+        sw.S3 = sw.S3 === 'ON' ? 'BRIGHT' : sw.S4 === 'ON' ? 'DARK' : 'NORMAL'; delete sw.S4;
+      }
       let st; try { st = Object.assign(Amp.defaultState(), cfg.state); Amp.build(cfg.profile, st); } catch (err) { note.textContent = 'Durum reddedildi: ' + err.message; return; }
       B.profile = cfg.profile; B.st = st; B.scen = null;
       B.newSim('hot', `Profil içe aktarıldı (${cfg.profile.id}, kaynak deney ${cfg.experiment || '—'}). Sonuçlar bu oturumda YENİDEN hesaplanır; eski sonuçlar taşınmaz.`);

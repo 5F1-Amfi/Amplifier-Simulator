@@ -28,7 +28,7 @@
   function defaultState() {
     return {
       mainsOn: true, mainsV: 230,
-      sw: { S1: 'HIGH', S2: 'RAW', S3: 'OFF', S4: 'OFF' },
+      sw: { S1: 'HIGH', S2: 'RAW', S3: 'NORMAL' },
       pots: { VR1: 0.5, VR2: 0.5, VR3: 0.5, VR4: 0.5 },
       loads: { J2: 4, J3: null, J4: null },      // jaka takılı yük (Ω); null = boş
       otPhase: 1,                                 // +1 doğru, −1 ters (NFB pozitife döner)
