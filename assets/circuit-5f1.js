@@ -81,7 +81,7 @@
 
     // --- Volume ve voicing ---------------------------------------------------------
     c('VR1', 'POT', 'Volume potu', ['VT', 'G2', 'GND'], 1e6, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Volume / voicing', decision: 'K-14', ctl: 'VOLUME', taper: 'lin',
-      note: 'GEÇİCİ: eldeki 1 MΩ lineer. İleride 1 MΩ log / audio ayrı karar.' }),
+      note: 'Eldeki 1 MΩ pot (K-14). Yerel elektronikçiden; üzerinde taper işareti yok, taper ölçülmedi. Simülatör lineer varsayar. Ölçüm: orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log.' }),
     c('S3', 'SW', 'Bright anahtarı', [], null, '', { stock: 'SATIN AL', src: 'P1 s.7', group: 'Anahtarlar', supply: ['S7'], spec: 'Tutmalı ON/OFF (SPST)' }),
     c('C11', 'C', 'Bright kapasitörü', ['S3X', 'G2'], null, 'F', { status: 'ACIK', src: 'P1 s.7', group: 'Volume / voicing', decision: 'K-07', candidates: [100e-12, 220e-12], rating: { V: 630 },
       note: 'Volume potunun giriş – wiper uçları arasında.' }),
@@ -171,9 +171,10 @@
       close: 'Kapalı. Satın almada gerilim sınıfı (≥ ≈ 500 V ya da iki direnç seri) ve PCB\'de 2 W yerleşimi kontrol edilir.', src: 'P1 s.12; EL-14' },
     { id: 'K-13', pri: 'P1', title: 'Şebeke sigortası', state: 'AÇIK', parts: ['F1'],
       open: 'PT VA ve inrush verisi olmadan seçilemez.', sim: 'Modelde yok.', close: 'PT verisinden sonra 250 V sigorta seçimi.', src: 'P1 s.4, s.12' },
-    { id: 'K-14', pri: 'P2', title: 'Volume taper', state: 'GEÇİCİ', parts: ['VR1'],
-      open: 'Eldeki 1 MΩ lineer pot ilk prototipte kullanılacak.', sim: 'Lineer. Log profil karşılaştırma için seçilebilir.',
-      close: 'İleride 1 MΩ log / audio.', src: 'P1 s.6' },
+    { id: 'K-14', pri: 'P2', title: 'Volume taper', state: 'KARAR VERİLDİ', parts: ['VR1'],
+      open: 'Kullanıcı (25.10.2026): eldeki pot kullanılır; taper çalışmayı ve güvenliği etkilemediği için önemli değil. Pot yerel elektronikçiden, üzerinde işaret yok; raporun "lineer" ifadesi ölçülmedi.',
+      sim: 'Lineer varsayılır (yalnız düğme konumu → ses ilişkisini etkiler). Log profil karşılaştırma için seçilebilir.',
+      close: 'Kapalı. İsteğe bağlı: taper ölçülürse kart güncellenir (orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log); toplam direncin ≈ 1 MΩ olduğu da aynı ölçümle doğrulanır.', src: 'P1 s.6; kullanıcı, 25.10.2026' },
     { id: 'K-15', pri: 'P2', title: 'Screen direnci ve 6V6 grid stopper', state: 'TANIMSIZ', parts: ['V2'],
       open: 'Raporda kesin değerli parça olarak yok.', sim: 'Eklenmedi: screen doğrudan B+2, grid doğrudan C2 / R8 düğümü.',
       close: 'Gerekçeli tasarım kararı verilirse eklenir.', src: 'IR §20' },

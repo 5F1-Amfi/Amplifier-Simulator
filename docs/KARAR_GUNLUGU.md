@@ -124,12 +124,12 @@
 
 ## K-14 · Volume taper
 
-- **Öncelik / durum:** P2 · GEÇİCİ
-- **Açık olan:** Eldeki 1 MΩ lineer pot ilk prototipte kullanılacak.
-- **Simülasyon varsayımı:** Lineer. Log profil karşılaştırma için seçilebilir.
-- **Nasıl kapanır:** İleride 1 MΩ log / audio.
+- **Öncelik / durum:** P2 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): eldeki pot kullanılır; taper çalışmayı ve güvenliği etkilemediği için önemli değil. Pot yerel elektronikçiden, üzerinde işaret yok; raporun "lineer" ifadesi ölçülmedi.
+- **Simülasyon varsayımı:** Lineer varsayılır (yalnız düğme konumu → ses ilişkisini etkiler). Log profil karşılaştırma için seçilebilir.
+- **Nasıl kapanır:** Kapalı. İsteğe bağlı: taper ölçülürse kart güncellenir (orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log); toplam direncin ≈ 1 MΩ olduğu da aynı ölçümle doğrulanır.
 - **Parçalar:** VR1
-- **Kaynak:** P1 s.6
+- **Kaynak:** P1 s.6; kullanıcı, 25.10.2026
 
 ## K-15 · Screen direnci ve 6V6 grid stopper
 
