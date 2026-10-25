@@ -54,6 +54,8 @@ assets/amp.css           Stiller
 tests/run-tests.js       node tests/run-tests.js [--fast] [--json] [KİMLİK …]
 scripts/export-docs.js   Kanonik tanımdan docs/ üretir
 docs/                    Karar günlüğü, BOM, model kartları, netlist, varsayılan konfigürasyon, test sonuçları, doğrulama notu
+docs/veri-sayfalari/     Sınır değerlerinin kaynağı olan tüp veri sayfaları (GE / RCA)
+DEGISIKLIKLER.md         Değişiklik dökümü: her sürüm etiketinde ne değişti
 ```
 
 Model dosyaları hem tarayıcıda hem Node'da çalışır.

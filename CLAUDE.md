@@ -40,7 +40,8 @@ node tests/run-tests.js          # kabul testleri
 ```
 
 `main`'e doğrudan basmak yerine branch açıp PR at; iki sahip aynı dal üstünde
-çalışıyor.
+çalışıyor. Merge'den sonra yeni sürümü `rev-a-YYYY-AA-GG` etiketiyle işaretle ve
+`DEGISIKLIKLER.md`'ye o etiketin bölümünü ekle.
 
 ## Yayın
 
