@@ -82,12 +82,12 @@
     // --- Volume ve voicing ---------------------------------------------------------
     c('VR1', 'POT', 'Volume potu', ['VT', 'G2', 'GND'], 1e6, 'Ω', { stock: 'ELDE', src: 'P1 s.6', group: 'Volume / voicing', decision: 'K-14', ctl: 'VOLUME', taper: 'lin',
       note: 'Eldeki 1 MΩ pot (K-14). Yerel elektronikçiden; üzerinde taper işareti yok, taper ölçülmedi. Simülatör lineer varsayar. Ölçüm: orta konumda uç–orta ≈ %50 lin, ≈ %10–20 log.' }),
-    c('S3', 'SW', 'Bright anahtarı', [], null, '', { stock: 'SATIN AL', src: 'P1 s.7', group: 'Anahtarlar', supply: ['S7'], spec: 'Tutmalı ON/OFF (SPST)' }),
-    c('C11', 'C', 'Bright kapasitörü', ['S3X', 'G2'], null, 'F', { status: 'ACIK', src: 'P1 s.7', group: 'Volume / voicing', decision: 'K-07', candidates: [100e-12, 220e-12], rating: { V: 630 },
-      note: 'Volume potunun giriş – wiper uçları arasında.' }),
-    c('S4', 'SW', 'Dark anahtarı', [], null, '', { stock: 'SATIN AL', src: 'P1 s.7', group: 'Anahtarlar', supply: ['S7'], spec: 'Tutmalı ON/OFF (SPST)' }),
+    c('S3', 'SW', 'Bright / Normal / Dark seçici', [], null, '', { stock: 'SATIN AL', src: 'P1 s.7; K-18', group: 'Anahtarlar', supply: ['S7'], spec: 'SPDT ON-OFF-ON mini toggle (tutmalı)', decision: 'K-18',
+      note: 'Ortak uç: VR1 wiper (G2). Bir yan: C11 → VR1 giriş ucu (BRIGHT). Öbür yan: C12 → toprak (DARK). Orta konum NORMAL. Rev A\'daki iki ayrı SPST anahtarın yerine (K-18).' }),
+    c('C11', 'C', 'Bright kapasitörü', ['VT', 'S3X'], null, 'F', { status: 'ACIK', src: 'P1 s.7', group: 'Volume / voicing', decision: 'K-07', candidates: [100e-12, 220e-12], rating: { V: 630 },
+      note: 'Volume potunun giriş ucundan S3 BRIGHT kontağına; S3 ortak ucu wiper.' }),
     c('C12', 'C', 'Dark kapasitörü', ['S4X', 'GND'], null, 'F', { status: 'ACIK', src: 'P1 s.7', group: 'Volume / voicing', decision: 'K-07', candidates: [470e-12, 1e-9, 2.2e-9], rating: { V: 630 },
-      note: 'V1B giriş bölgesinden toprağa.' }),
+      note: 'S3 DARK kontağından toprağa; S3 ortak ucu wiper (V1B gridi).' }),
 
     // --- V1B ve güç katı -----------------------------------------------------------
     c('V1B', 'TRIODE', 'Sürücü katı (12AX7 2. yarı)', ['PB', 'G2', 'KB'], null, '', { stock: 'ELDE', src: 'P1 s.3', group: 'Tüpler', model: '12AX7-koren', decision: 'K-02', spec: '12AX7 / ECC83', sameAs: 'V1A',
@@ -117,8 +117,7 @@
   const SWITCHES = {
     S1: { label: 'Giriş', positions: ['HIGH', 'LOW'], join: { HIGH: [['S1A', 'IN'], ['S1B', 'IN']], LOW: [['S1A', 'GND']] } },
     S2: { label: 'Ton', positions: ['EQ', 'RAW'], join: { EQ: [['TSI', 'CO1'], ['VT', 'TW']], RAW: [['VT', 'CO1']], 'RAW:tap': [['TSI', 'CO1'], ['VT', 'CO1']] } },
-    S3: { label: 'Bright', positions: ['OFF', 'ON'], join: { OFF: [], ON: [['S3X', 'VT']] } },
-    S4: { label: 'Dark', positions: ['OFF', 'ON'], join: { OFF: [], ON: [['S4X', 'G2']] } },
+    S3: { label: 'Bright / Dark', positions: ['NORMAL', 'BRIGHT', 'DARK'], join: { NORMAL: [], BRIGHT: [['S3X', 'G2']], DARK: [['S4X', 'G2']] } },
   };
 
   // --- Karar günlüğü -----------------------------------------------------------------
@@ -186,6 +185,10 @@
       open: 'Kullanıcı (25.10.2026): tüpler veri sayfası sınırına kadar zorlanmasın, pay bırakılsın. Seçilen yöntem uydurma bir yüzde yerine veri sayfalarının kendi iki sınır sistemini kullanır.',
       sim: 'Design-center üstü uyarı, design-maximum üstü hata; yalnız design-center bilinen tüpte (12AX7, 5Y3GT) design-center üstü hata. Gerilimler katoda göre, şebeke periyodu ortalaması. 6V6GT\'de design-center ≈ design-max\'ın %86–91\'i.',
       close: 'Kapalı. Gerçek PT verisi (K-08) ve ilk açılış ölçümünden sonra çalışma noktası yeniden denetlenir.', src: 'docs/veri-sayfalari/ (GE ET-T914, RCA 6V6GTA, GE ET-T509B, RCA 5Y3GT)' },
+    { id: 'K-18', pri: 'P1', title: 'Bright / Dark tek anahtar', state: 'KARAR VERİLDİ', parts: ['S3', 'C11', 'C12'],
+      open: 'Kullanıcı (25.10.2026): bright ve dark için tek anahtar; "diğer amfilerde nasıl çalışıyorsa". Rev A\'da iki ayrı SPST (S3 Bright, S4 Dark) vardı; özgün 5F1\'de ikisi de yok.',
+      sim: 'Tek SPDT ON-OFF-ON (S3): BRIGHT / NORMAL / DARK. Ortak uç wiper; C11 wiper ile VR1 giriş ucu arasına, C12 wiper ile toprak arasına bağlanır. Her iki ton tek başına Rev A ile aynıdır; "ikisi birden" konumu kalkar. S4 referansı kaldırıldı.',
+      close: 'Kapalı. C11 / C12 değerleri K-07\'de açık (dinleme). Panel delik sayısı bir azalır.', src: 'P1 s.7; kullanıcı, 25.10.2026' },
   ];
 
   /**

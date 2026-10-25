@@ -1,6 +1,6 @@
 # Malzeme listesi
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `2c2e1b56`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 Satın alma onayı değildir. Tedarik kaynakları 01.10.2026 tarihinde kontrol edilen adaylardır; stok, fiyat ve teslimat teyit edilmedi. Tolerans, üretici, parça kodu ve paket alanları henüz boştur (veri eksik).
@@ -81,8 +81,7 @@ Satın alma onayı değildir. Tedarik kaynakları 01.10.2026 tarihinde kontrol e
 |---|---|---|---|---|---|---|---|
 | S1 | High / Low seçici | DPDT ON-ON mini toggle | 1 | RAPOR KARARI | SATIN AL | P1 s.5 | S7 |
 | S2 | EQ / RAW seçici | — | 1 | AÇIK KARAR · K-06 | ŞARTNAME BEKLİYOR | P1 s.7 | S7 |
-| S3 | Bright anahtarı | Tutmalı ON/OFF (SPST) | 1 | RAPOR KARARI | SATIN AL | P1 s.7 | S7 |
-| S4 | Dark anahtarı | Tutmalı ON/OFF (SPST) | 1 | RAPOR KARARI | SATIN AL | P1 s.7 | S7 |
+| S3 | Bright / Normal / Dark seçici | SPDT ON-OFF-ON mini toggle (tutmalı) | 1 | RAPOR KARARI · K-18 | SATIN AL | P1 s.7; K-18 | S7 |
 
 ## Bağlantı
 

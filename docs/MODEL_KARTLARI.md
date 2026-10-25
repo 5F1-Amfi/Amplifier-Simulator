@@ -1,6 +1,6 @@
 # Model kartları
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `2c2e1b56`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 ## 12AX7-koren · v1.0

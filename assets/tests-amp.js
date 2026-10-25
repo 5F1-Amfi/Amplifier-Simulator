@@ -159,15 +159,15 @@
         const b = Amp.build(P0(), S0()), tsi = b.nn('TSI') !== b.nn('CO1'), vt = b.nn('VT') === b.nn('CO1');
         return res(spread > 3 && load > 0.01 && tapLoad > 0.01 && tsi && vt, `EQ − RAW: ${f(Math.min(...diff), 1)} … ${f(Math.max(...diff), 1)} dB (yayılım ${f(spread, 1)} dB) · V1A çıkışı EQ'da %${f(load * 100, 1)} farklı · "tap" yöntemi %${f(tapLoad * 100, 1)} farklı`, 'Kayıp frekansa bağlı (tek kazanç çarpanı değil); V1A yükü değişiyor; RAW\'da TSI ayrık, VT ≡ CO1');
       } },
-    { id: 'EL-06', group: 'Elektriksel', title: 'Bright / Dark, dört konum', req: 'IR §8',
+    { id: 'EL-06', group: 'Elektriksel', title: 'Bright / Normal / Dark, tek anahtar (K-18)', req: 'IR §8',
       run(ctx) {
         const op = ctx.base().op, fr = [200, 5000];
-        const g = (br, dk, vol) => Amp.acSweep(P0(), S0(s => { s.sw.S3 = br; s.sw.S4 = dk; s.pots.VR1 = vol; }), fr, op).H('G2').mag.map(dB);
-        const n = g('OFF', 'OFF', 0.3), b = g('ON', 'OFF', 0.3), d = g('OFF', 'ON', 0.3), bd = g('ON', 'ON', 0.3);
-        const nF = g('OFF', 'OFF', 1), bF = g('ON', 'OFF', 1);
-        const brt = b[1] - n[1], drk = d[1] - n[1], both = bd[1] - n[1], full = Math.max(Math.abs(bF[0] - nF[0]), Math.abs(bF[1] - nF[1]));
+        const g = (pos, vol) => Amp.acSweep(P0(), S0(s => { s.sw.S3 = pos; s.pots.VR1 = vol; }), fr, op).H('G2').mag.map(dB);
+        const n = g('NORMAL', 0.3), b = g('BRIGHT', 0.3), d = g('DARK', 0.3);
+        const nF = g('NORMAL', 1), bF = g('BRIGHT', 1);
+        const brt = b[1] - n[1], drk = d[1] - n[1], full = Math.max(Math.abs(bF[0] - nF[0]), Math.abs(bF[1] - nF[1]));
         const lowSame = Math.abs(b[0] - n[0]) < 0.5 && Math.abs(d[0] - n[0]) < 0.5;
-        return res(brt > 1 && drk < -1 && lowSame && full < 0.05 && Math.abs(both - (brt + drk)) > 0.05, `5 kHz (volume %30): Bright ${f(brt, 2)} dB · Dark ${f(drk, 2)} dB · ikisi ${f(both, 2)} dB · tam volume'da Bright farkı ${f(full, 3)} dB`, 'Bright > +1 dB, Dark < −1 dB, 200 Hz\'de ≈ 0; tam volume\'da Bright farkı < 0,05 dB; ikisi birlikte ≠ basit toplam', 'Gerçek ağ etkileşimi: Bright C11 pot üst yarısını, Dark C12 kaynak empedansını görür.');
+        return res(brt > 1 && drk < -1 && lowSame && full < 0.05,`5 kHz (volume %30): Bright ${f(brt, 2)} dB · Dark ${f(drk, 2)} dB · tam volume'da Bright farkı ${f(full, 3)} dB`, 'Bright > +1 dB, Dark < −1 dB, 200 Hz\'de ≈ 0; tam volume\'da Bright farkı < 0,05 dB', 'Tek SPDT ON-OFF-ON: "ikisi birden" konumu yok (K-18). Bright C11 pot üst yarısını, Dark C12 kaynak empedansını görür.');
       } },
     { id: 'EL-07', group: 'Elektriksel', title: '6V6 DC çalışma noktası', req: 'IR §7',
       run(ctx) {
@@ -354,11 +354,11 @@
     { id: 'UI-01', group: 'Veri / arayüz', title: 'Veri tutarlılığı: şema, denetçi, netlist ve BOM', req: 'IR §14, §16',
       run() {
         const P = P0(), problems = []; let combos = 0;
-        for (const s1 of ['HIGH', 'LOW']) for (const s2 of ['EQ', 'RAW']) for (const s3 of ['OFF', 'ON']) for (const s4 of ['OFF', 'ON']) for (const m of ['lift', 'tap']) {
+        for (const s1 of ['HIGH', 'LOW']) for (const s2 of ['EQ', 'RAW']) for (const s3 of D.SWITCHES.S3.positions) for (const m of ['lift', 'tap']) {
           const p = D.cloneProfile(P); p.rawMethod = m;
-          const st = S0(s => { s.sw = { S1: s1, S2: s2, S3: s3, S4: s4 }; });
+          const st = S0(s => { s.sw = { S1: s1, S2: s2, S3: s3 }; });
           combos++;
-          let b; try { b = Amp.build(p, st); } catch (e) { problems.push(`${s1}/${s2}/${s3}/${s4}/${m}: ${e.message}`); continue; }
+          let b; try { b = Amp.build(p, st); } catch (e) { problems.push(`${s1}/${s2}/${s3}/${m}: ${e.message}`); continue; }
           const sch = Sch.build({ author: '', source: '', date: '' }, p, st);
           for (const c of D.COMPONENTS) {
             if (!sch.ids.includes(c.id)) problems.push(`${c.id} şemada yok`);
