@@ -534,7 +534,8 @@
     const pkIdeal = idealPeaks(P);
     add(pkIdeal[3].v > 500 ? 'warn' : 'ok', 'İdeal yüksüz tepe (sınır örnekleri)', pkIdeal.map(p => U(p.v, 1) + ' V').join(' · '), 'Gerçek B+ tahmini değil; gerilim marjını sorgulayan ideal örnekler. +%10 ve %5 test varsayımıdır (inceleme raporu §6.2).');
     if (w) {
-      for (const id of ['R10', 'R11', 'R9']) {
+      for (const id of ['R10', 'R11', 'R9', 'R16']) {
+        if (!D.isFitted(id, P)) continue;
         const comp = D.BY_ID[id], p = w.rp[id], pr = comp.rating.W;
         add(p > pr ? 'bad' : p > 0.6 * pr ? 'warn' : 'ok', `${id} güç kaybı`, `${U(p, 2)} W / ${pr} W`, `${comp.fn}. Sürekli çalışmada pay bırakılması önerilir.`);
       }

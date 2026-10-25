@@ -1,6 +1,6 @@
 # Karar günlüğü
 
-> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `4bdeedb1`
+> 5F1 TABANLI MODİFİYE TÜPLÜ GİTAR AMFİSİ · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a`
 > Bu dosya `scripts/export-docs.js` ile kanonik tanımdan üretilir; elle düzenlenmez.
 
 "Simülasyon varsayımı" deneysel profildir; Revizyon A'nın kesin kararı değildir.
@@ -106,12 +106,12 @@
 
 ## K-12 · Bleeder ağı
 
-- **Öncelik / durum:** P1 · AÇIK
-- **Açık olan:** Rev A'da yok; PCB finalinde değerlendirilecek.
-- **Simülasyon varsayımı:** Takılı değil. 220 kΩ varyantı senaryo olarak denenebilir.
-- **Nasıl kapanır:** Değer, güç ve sürekli yük etkisiyle karar.
+- **Öncelik / durum:** P1 · KARAR VERİLDİ
+- **Açık olan:** Kullanıcı (25.10.2026): bleeder takılsın. Gerekçe EL-14: tüpler iletimde değilken kapatılırsa bleeder'sız B+1 40 s sonra hâlâ ≈ 444 V; 220 kΩ ile ≈ 3 V. Rev A'da yoktu.
+- **Simülasyon varsayımı:** R16 = 220 kΩ / 2 W, B+1 → toprak, varsayılan takılı. Sürekli yük ≈ 1,6 mA; güç ≈ 0,6 W kararlı, ≈ 0,9 W soğuk açılış tepesinde (2 W'ın %47'si). "Sökülü" yalnız arıza senaryosu.
+- **Nasıl kapanır:** Kapalı. Satın almada gerilim sınıfı (≥ ≈ 500 V ya da iki direnç seri) ve PCB'de 2 W yerleşimi kontrol edilir.
 - **Parçalar:** R16
-- **Kaynak:** P1 s.12
+- **Kaynak:** P1 s.12; EL-14
 
 ## K-13 · Şebeke sigortası
 
@@ -173,7 +173,6 @@ Açık kararlar kapanana kadar simülasyonun çalışabilmesi için seçilen ilk
 | VR4 | 25 kΩ | P1 başlangıç referansı. |
 | C11 | 100 pF | P1 aday aralığının alt ucu (100–220 pF). |
 | C12 | 1 nF | P1 deneme değerlerinin ortası (470 pF / 1 nF / 2,2 nF). |
-| R16 | 220 kΩ (takılı değil) | Opsiyonel varyant değeri. |
 | C7 | 25 µF (takılı değil) | Opsiyonel varyant değeri. |
 | T1 | 320 VAC yüksüz EMK, Rt 200 Ω / plaka | Üretici verisi yok. Rt = 200 Ω küçük bir 320-0-320 V sargı için temsili etkin kaynak direncidir. |
 | T2 | DCR 300 Ω, Lp 15 H, kaçak 30 mH | Üretici verisi yok. P1: "primer DCR birkaç yüz ohm mertebesinde olabilir". |

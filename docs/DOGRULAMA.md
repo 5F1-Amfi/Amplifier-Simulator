@@ -1,6 +1,6 @@
 # Doğrulama notu
 
-> 5F1 Modifiye · Rev A · profil DENEYSEL-01 · devre kimliği `4bdeedb1` · 01.10.2026
+> 5F1 Modifiye · Rev A · profil DENEYSEL-01 · devre kimliği `6a14dc7a` · 25.10.2026 (R16 bleeder takılı, K-12)
 > Ham sonuçlar: `docs/test-sonuclari.json` (`node tests/run-tests.js --json`).
 
 ## Özet
@@ -19,7 +19,7 @@ Testler simülatörün kendi içinde tutarlı ve doğru hesap yaptığını sın
 |---|---|
 | Analitik (bölücüler, yansıyan yük, empedanslar) | Yapıldı: EL-02, EL-10, NU-01 |
 | Bağımsız kod, aynı topoloji (TMB el türetimi; yük doğrusu ikiye bölme) | Yapıldı: NU-02, NU-03 |
-| Üretici veri sayfası noktası (JJ 5Y3S, JJ 6V6S) | Yapıldı: MK-01, MK-02 — tek nokta; eldeki tüp değil |
+| Üretici veri sayfası noktası (JJ 5Y3S, JJ 6V6S) | Yapıldı: MK-01, MK-02 — tek nokta; eldeki tüp değil. Sınır denetimleri artık RCA / GE tip veri sayfalarına göre (K-17); MK-02 noktası henüz JJ'de (RCA aynı noktada Ig2 4,5 mA, model 5,0 mA) |
 | Sayısal yakınsama ve tekrar | Yapıldı: NU-04, NU-05, NU-06 |
 | Bağımsız çözücü (ngspice) | **Çalıştırılmadı** (kurulu değil) |
 | Donanım ölçümü | **Yok** |
@@ -35,9 +35,9 @@ Her ikisinde de kod değil, testin beklentisi yanlıştı; beklenti koda uydurul
 
 Bunlar test sonucu değil, amfinin kendisi hakkındaki bulgulardır. Hepsi deneysel PT verisine (320 VAC yüksüz EMK, 200 Ω) ve genel tüp modellerine dayanır.
 
-1. **C4 / C5 (10 µF / 450 V) soğuk açılışta nominal gerilimine dayanıyor.** 5Y3 ~1 s'de iletir, yük ~6 s sonra gelir; arada B+1 ≈ B+2 ≈ B+3 ≈ 450 V (ideal tepe 452,5 V). C3 (500 V) %90'da. Şebeke +%10 varsayımında tepe ≈ 495 V: C4 / C5 aşılır, C3 sınırda. Yalnız C3'ü yükseltmek riski çözmez (K-10).
-2. **Kapasitörler, tüpler iletimde değilken kapatılırsa dolu kalır** (bleeder yok): açılıştan 3 s sonra kapatmada 40 s sonra ≈ 444 V. 220 kΩ bleeder ile ≈ 3 V.
-3. **6V6 anodik güç kaybı ≈ 12,3 W** (Va 349 V, Ia 37,4 mA, Vk 19,1 V). Eldeki tüpün sınırı bilinmiyor; JJ 6V6S referansı 14 W.
+1. **C4 / C5 (10 µF / 450 V) soğuk açılışta nominal gerilimine yaklaşıyor.** 5Y3 ~1 s'de iletir, yük ~6 s sonra gelir; arada B+1 ≈ B+2 ≈ B+3 ≈ 435 V (bleeder takılı; bleeder'sız 450 V, ideal tepe 452,5 V). C4 / C5 %97, C3 (500 V) %87. Şebeke +%10 varsayımında tepe ≈ 495 V: C4 / C5 aşılır, C3 sınırda. Yalnız C3'ü yükseltmek riski çözmez (K-10).
+2. **Kapasitörler, tüpler iletimde değilken kapatılırsa dolu kalır** (bleeder yokken): açılıştan 3 s sonra kapatmada 40 s sonra ≈ 444 V. 220 kΩ bleeder ile ≈ 3 V. Bu bulgu üzerine R16 takılı olarak kararlaştırıldı (K-12, 25.10.2026); "bleeder kopuk" artık arıza senaryosudur.
+3. **6V6 design-center sınırlarının üstünde, design-maximum'un altında** (K-17): Pa ≈ 12,2 W (12 · 14 W), Va−Vk ≈ 328 V (315 · 350 V), Vg2−Vk ≈ 289 V (285 · 315 V); Ia 37,2 mA, Vk 19,0 V. Sınırlar GE 6V6-GT ve RCA 6V6GTA tip veri sayfalarından (docs/veri-sayfalari/).
 4. **OT primer DC akımı ≈ 37 mA; sinyal altında ortalama yükselir.** Şartnamedeki "en az ~40 mA, tercihen ~50 mA" bu çalışma noktasıyla teyit edilmeli.
 5. **NFB ≈ 6,2 dB** (|T| ≈ 1,05 @ 1 kHz). OT fazı ters bağlanırsa çevrim, modelin kapsadığı aralıkta kararsızdır (osilasyon beklenir).
 6. **Ton ağı devredeyken kazanç 11–20 dB düşer** ve kayıp frekansa bağlıdır; RAW yalnız "daha yüksek kazanç" değildir.

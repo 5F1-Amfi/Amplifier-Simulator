@@ -38,9 +38,9 @@
       watch: 'Yansıyan yük 4 kΩ\'a düşer. Varsayılan kullanım tek kabindir.' },
     { id: 'nfbrev', start: 'hot', fault: true, name: 'NFB ters faz', desc: 'OT primer uçları ters bağlı', apply: st => { st.otPhase = -1; },
       watch: 'Geri besleme pozitife döner. "NFB çevrimi" sekmesi çevrim kazancını ve Nyquist değerlendirmesini gösterir.' },
-    { id: 'coldoff', start: 'cold', fault: true, name: 'Açılıştan 3 s sonra kapat', desc: 'Bleeder yok; tüpler henüz iletimde değil', at: 3, inject: st => { st.mainsOn = false; },
+    { id: 'coldoff', start: 'cold', fault: true, name: 'Açılıştan 3 s sonra kapat, bleeder kopuk', desc: 'R16 sökülü / açık devre; tüpler henüz iletimde değil', apply: (st, p) => { p.fitted.R16 = false; }, at: 3, inject: st => { st.mainsOn = false; },
       watch: 'Kapasitörler dolu kalır: yük yok. Fiş çekili olması devrenin güvenli olduğunu göstermez.' },
-    { id: 'bleeder', start: 'cold', name: 'Aynısı, 220 kΩ bleeder ile', desc: 'R16 takılı varyant', apply: (st, p) => { p.fitted.R16 = true; }, at: 3, inject: st => { st.mainsOn = false; },
+    { id: 'bleeder', start: 'cold', name: 'Aynısı, 220 kΩ bleeder ile', desc: 'R16 takılı (K-12, varsayılan)', apply: (st, p) => { p.fitted.R16 = true; }, at: 3, inject: st => { st.mainsOn = false; },
       watch: 'B+ onlarca saniyede boşalır. Bleeder olsa bile boşaldığı ölçülmelidir.' },
   ];
 
